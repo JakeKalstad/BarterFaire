@@ -1,0 +1,77 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/Site.css')
+        link(rel='stylesheet', href='/stylesheets/dropzone.css') 
+        link(rel='stylesheet', href='/stylesheets/toastr.css')
+        link(rel='stylesheet', href='/stylesheets/vex.css')
+        link(rel='stylesheet', href='/stylesheets/vex-theme-os.css')
+    body
+        block content 
+        script(src='/javascripts/jquery-1.8.2.min.js')
+        script(src='/javascripts/toastr.js')
+        script(src='/javascripts/q.min.js')
+        script(src='/javascripts/vex.combined.min.js')
+        script(src='/javascripts/underscore.js')
+        script(src='/javascripts/sammy.js')
+        script(src='/javascripts/modernizr-2.6.2.js')
+        script(src='/javascripts/knockout-2.2.0.js')
+        script(src='/javascripts/native.history.min.js')
+        script(src='/javascripts/dropzone.js')
+        script(src='/javascripts/Application.js') 
+        #content.content-wrapper 
+            header.headerStyle.component
+                div
+                   div
+                      img.logo(src="/Images/LOGO.png", onclick="window.location='/'")
+                      section#contentWrapSection.content-wrapper.main-content.clear-fix
+                        div#titleBar.content-wrapper
+                            hgroup.title
+                                h1 Barter Faire
+                                h2 A way to buy and sell a bunch of shit on the internet easily and securely.
+
+                    section#loginInformation.loginInfoSection 
+                        div(data-bind="if: isOnline()") 
+                            span.sexyFont
+                                Welcome back, 
+                                span(data-bind="text: name")
+                            ul
+                                li
+                                    button.topMenuButton(data-bind="click: manageAccount")
+                                        Manage Account                            
+                                li
+                                    button.topMenuButton(data-bind="click: logOut")
+                                        Log Off                         
+                        div(data-bind="ifnot: isOnline()")
+                            ul
+                                li
+                                    button.topMenuButton(onclick="Application.Transition('register')")
+                                        Register 
+                                li
+                                    button.topMenuButton(onclick="Application.Transition('login')")
+                                        Log-in 
+        div#body
+            div.leftToolBox.component
+                p Where can we take this?
+                div#filters(style="float:left")
+                    div
+                        input#searchBox(style="width:160px" type="text" placeholder="Search!")
+                    label
+                        Categories
+                    div.styled-select(style="width:140px")
+                        select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Filter by Category...'")                    
+                div#tool(style="margin-left:175px;margin-top:90px; cursor: pointer;", onclick="toggleTools()")
+                    img#leftToolHandle(src="/Images/up.png")                
+            div#mainContent.component(style="display: block;background: #fff;width: 1000px;padding: 2px 2px 25px 25px;border-radius: 45px;border: 2px dashed #B5DDDB;")
+script(type='text/javascript').
+    var BarterWindow = window;
+    $(document).ready(function () {
+        if (BarterWindow.File && BarterWindow.FileReader && BarterWindow.FileList && BarterWindow.Blob) {
+            toastr.success("HTML5 Compliance makes you a better person!", "Yuck Feah!");
+        } else {
+            toastr.error("You are using an older browser that isn't HTML5 compliant :\ Try again when you step it up nerd.", "STEP IT UP");
+        }
+        Application.Initialize(BarterWindow);
+        Application.Transition("home"); 
+    });
