@@ -9,7 +9,7 @@ function AccountResult(session, exception) {
 	this.Error = (exception) ? exception.Message : ""; 
 }
  
-router.post('/UserInfo', function(req, res) { 
+router.post('/userinfo', function(req, res) { 
   res.send(new AccountResult(req.session));
 });
 

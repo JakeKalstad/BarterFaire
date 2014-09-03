@@ -9,9 +9,15 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var account = require('./routes/account');
+var state = require('./routes/state');
+var location = require('./routes/location');
+var category = require('./routes/category');
+var file = require('./routes/file');
+var filterdata = require('./routes/filterdata');
+var post= require('./routes/post');
+var session = require('./routes/session');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -28,7 +34,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/Account', account);
+app.use('/account', account);
+app.use('/state', state);  
+app.use('/location', location); 
+app.use('/category', category);
+app.use('/file', file);
+app.use('/filterdata', filterdata);  
+app.use('/post', post);     
+app.use('/session', session);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
