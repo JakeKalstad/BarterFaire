@@ -13,8 +13,7 @@ html
         script(src='/javascripts/toastr.js')
         script(src='/javascripts/q.min.js')
         script(src='/javascripts/vex.combined.min.js')
-        script(src='/javascripts/underscore.js')
-        script(src='/javascripts/sammy.js')
+        script(src='/javascripts/underscore.js') 
         script(src='/javascripts/modernizr-2.6.2.js')
         script(src='/javascripts/knockout-2.2.0.js')
         script(src='/javascripts/native.history.min.js')
@@ -29,28 +28,23 @@ html
                         div#titleBar.content-wrapper
                             hgroup.title
                                 h1 Barter Faire
-                                h2 A way to buy and sell a bunch of shit on the internet easily and securely.
-
+                                h2 A way to buy and sell a bunch of shit on the internet easily and securely. 
                     section#loginInformation.loginInfoSection 
-                        div(data-bind="if: isOnline()") 
+                        div(data-bind="if: name")
                             span.sexyFont
                                 Welcome back, 
                                 span(data-bind="text: name")
                             ul
                                 li
-                                    button.topMenuButton(data-bind="click: manageAccount")
-                                        Manage Account                            
+                                    button.topMenuButton(data-bind="click: manageAccount") Manage Account                            
                                 li
-                                    button.topMenuButton(data-bind="click: logOut")
-                                        Log Off                         
-                        div(data-bind="ifnot: isOnline()")
+                                    button.topMenuButton(data-bind="click: logOut") Log Off                         
+                        div(data-bind="ifnot: name")
                             ul
                                 li
-                                    button.topMenuButton(onclick="Application.Transition('register')")
-                                        Register 
+                                    button.topMenuButton(onclick="Application.Transition('register')") Register 
                                 li
-                                    button.topMenuButton(onclick="Application.Transition('login')")
-                                        Log-in 
+                                    button.topMenuButton(onclick="Application.Transition('login')") Log-in 
         div#body
             div.leftToolBox.component
                 p Where can we take this?

@@ -153,6 +153,7 @@ function User() {
     this.locationDefault = ko.observable(-1);
     var self = this;
     this.setUser = function(res) {
+    	if(!res) return;
         self.name(Extensions.upperCase(res.UserName));
         self.email(res.Email);
         self.id(res.Id);
