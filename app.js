@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var busboy = require('connect-busboy');
 var session = require('express-session');
 var encryption = require('./Encryption');
 var dataService = require('./DataService');
@@ -25,12 +26,15 @@ var db = mongo.db("mongodb://localhost:27017/", {
 var dataService = dataService.GetDataService(db);
 
 var app = express();
-app.use(bodyParser.urlencoded({
+app.use(busboy());
+
+app.use(bodyParser.urlencoded({ 
     extended : false
 }));
-app.use(bodyParser.json({
+app.use(bodyParser.json({ 
     strict : false
 }));
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 

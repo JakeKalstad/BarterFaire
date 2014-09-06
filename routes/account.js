@@ -41,7 +41,7 @@ router.post('/edit', function(req,res) {
             user.Email = req.body.email || user.Email;
             req.encryption.cryptPassword(req.body.password, function(err, hash) { 
                 user.Password = hash; 
-                req.dataService.Update('users', user, {$set:{Email:user.Email, Password : hash}}, function(err, coll) {
+                req.dataService.Users.Update(user, {$set:{Email:user.Email, Password : hash}}, function(err, coll) {
                     setSession(req.session, user); 
                     res.send(new AccountResult(req.session)); 
                 });
@@ -51,7 +51,7 @@ router.post('/edit', function(req,res) {
             res.send(new AccountResult(req.session));
         }
     };
-    req.dataService.Get('users', callBack, {'_id' : req.session.Id});
+    req.dataService.Users.Get(callBack, {'_id' : req.session.Id});
 });
 
 router.post('/newregister', function(req,res) {
@@ -61,7 +61,7 @@ router.post('/newregister', function(req,res) {
     console.log(username+" "+password+" "+email);
     req.encryption.cryptPassword(req.body.Password, function(err, hash) { 
         req.body.Password = hash;
-        req.dataService.Insert('users', req.body, function(err, collection) {
+        req.dataService.Users.Insert(req.body, function(err, collection) {
             setSession(req.session, req.body);
             console.log(req);
             res.send(new AccountResult(req.session));
@@ -88,7 +88,7 @@ router.post('/login', function(req,res) {
         }
     };
     
-  	req.dataService.Get('users', callBack, {'UserName' : username});
+  	req.dataService.Users.Get(callBack, {'UserName' : username});
 });
     
 

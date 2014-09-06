@@ -6,7 +6,7 @@ router.post('/index', function(req, res) {
 });
 
 router.post('/getallstates', function(req, res) {
-	req.dataService.Get('states', function (err, items) {
+	req.dataService.States.Get(function (err, items) {
 		items.forEach(function(itm) { 
 			itm.Id = itm._id; 
 			itm.imagePath = '/Images/States/' + itm.Name.trim().toLowerCase().replace(' ', '') + ".png";

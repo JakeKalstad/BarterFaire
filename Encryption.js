@@ -9,7 +9,6 @@ module.exports = {
 	    bcrypt.hash(password, salt, function(err, hash) {
 	      return callback(err, hash);
 	    });
-	
 	  });
 	},	
 	comparePassword : function(password, userPassword, callback) {
