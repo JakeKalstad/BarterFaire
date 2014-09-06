@@ -6,11 +6,9 @@ router.post('/index', function(req, res) {
 });
 
 router.post('/getallstates', function(req, res) {
-	req.db.collection('states').find().toArray(function (err, items) {
-		items.forEach(function(itm) {
-			console.log(itm.Name);
-			itm.Id = itm._id;
-			
+	req.dataService.Get('states', function (err, items) {
+		items.forEach(function(itm) { 
+			itm.Id = itm._id; 
 			itm.imagePath = '/Images/States/' + itm.Name.trim().toLowerCase().replace(' ', '') + ".png";
 		});
         res.json(items); 

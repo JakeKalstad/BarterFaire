@@ -51,13 +51,35 @@ var states =
 { Name : 'Wisconsin' },
 { Name : 'Wyoming' }];
 
+var categories = [
+    { Name : "Auto"},
+    { Name : "Electronics"},
+    { Name : "Community"},
+    { Name : "Music"}
+];
+
+var popCount = 0;
+function complete(res) {
+    console.log(popCount);
+    if(--popCount == 0)
+        res.send({msg : 'complete!'});
+}
+function populate(coll, data,req, res) {
+    popCount++; 
+    req.dataService.Remove(coll, {}, function(err, numberRemoved) { 
+       console.log("Removed" + numberRemoved + " records from collection: " + coll);
+       req.dataService.Insert(coll, data, function(err1, result) { 
+            complete(res);        
+        });    
+    }); 
+}
+
 router.post('/seed', function(req,res) {
-	req.db.collection('states').remove({},function(err,numberRemoved){
-       console.log("inside remove call back" + numberRemoved);
-    });
-	req.db.collection('states').insert(states, function(err, result){
-        res.send((err === null) ? { msg: '' } : { msg: err });
-    });
+    console.log('seed...');
+    populate('states', states, req, res);
+    console.log('seed...');
+    populate('categories', categories, req, res); 
+    console.log('seed...');
 });
 
 module.exports = router;
