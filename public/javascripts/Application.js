@@ -627,8 +627,7 @@ var Application = (function() {
                 // Note: We are using History.getState() instead of event.state
                 var model = modelMap[state.data.modelKey];
                 Ajax.UpdateView(state.url, JSON.stringify(state.data.id), function() {
-                    model.Populate();
-                    fitlers.
+                    model.Populate(); 
                     ko.cleanNode(document.getElementById("mainContent"));
                     ko.applyBindings(model, document.getElementById("mainContent"));
                     $("#mainContent").fadeIn("slow");
