@@ -63,19 +63,26 @@ html {
     background: #FF3030;
 }
 #content {
-	width: 1300px;
-	height: 180px;
+	width: 100%;
+	height: 100px;
 	margin-left: 0;
+	z-index: 10;
+    position: fixed;
 }
 .loginInfoSection{
-	margin: 5px 35px 0px 0px;	
+	margin: 5px 35px 0px 0px;	 
+    margin-top: -75px;
 }
 img.logo {
-	margin-left: 85px;
+	margin-top: -20px;
 	cursor: pointer;
 }
-#contentWrapSection{
-	margin-top: -130px;
+#contentWrapSection{ 
+    margin-top: -75px; 
+    padding: 0; 
+    
+height: 70px;
+padding-right: 25px;
 }
 body {
     background: #efeeef;
@@ -177,11 +184,8 @@ h5, h6 {
     }
 
 
-.headerStyle {
-    z-index: 10;
-    position: fixed;
-    background: #FEFEFA;
-    border: 2px dashed #B5DDDB;
+.headerStyle { 
+    background: #FEFEFA; 
     padding: 15px;
     border-radius: 0px 0px 50px 0px;
 }
@@ -223,6 +227,7 @@ h5, h6 {
     background-color: #efeeef;
     clear: both;
     padding-bottom: 35px;
+    padding-top: 100px;
 }
 .rotated {
    transition:all 1s ease-in-out;
@@ -247,18 +252,15 @@ h5, h6 {
 }
 
 .main-content {
-    background: url("../Images/accent.png") no-repeat; 
-    margin-left: 310px;
+    background: url("../Images/accent.png") no-repeat;
+    margin-left: 235px;
+    padding-right: 25px;
 }
 
 .featured + .main-content {
     background: url("../Images/heroAccent.png") no-repeat;
 }
-
-header .content-wrapper {
-    padding-top: 20px;
-}
-
+ 
 footer {
     clear: both;
     background-color: #e2e2e2;
@@ -276,12 +278,10 @@ footer {
 }
 .sexyFont {
     font-family: Georgia;
-    color: rgba(69,54,37,0.6);
+    color: rgba(69,198,150,0.6);
     font-size: 1.8em;
     font-style: italic;
-    letter-spacing: 0.25em; 
-    padding-bottom: 0.5em;
-    font-weight: bold;
+    letter-spacing: 0.04em;
 }
 
 button.topMenuButton { 
@@ -344,7 +344,7 @@ button.topMenuButton {
 #loginInformation {
     display: block;
     font-size: .85em;
-    margin: 0 0 10px;
+    margin: -75px 75px 10px;
     text-align: right;
 }
 
@@ -551,8 +551,8 @@ button.locationButton:active {
 }
 
 /* page titles */
-hgroup.title {
-    margin-bottom: 10px;
+hgroup.title {  
+    
 }
 
     hgroup.title h1, hgroup.title h2 {

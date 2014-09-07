@@ -105,6 +105,72 @@ var Dialog = (function() {
         }
     };
 })();
+/*div
+                        input#searchBox(style="width:160px" type="text" placeholder="Search!")
+                    label
+                        Categories
+                    div.styled-select(style="width:170px")
+                        select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'")
+*/
+var JKFilters = (function() {
+    function filterHtmlHelper() {
+        this.GetTextInput = function(id, style, placeHolder) {
+            return '<input id="'+id+'" stlye="'+style+'" type="text" placeholder="'+placeHolder+'"/>';
+        };
+        this.GetSelect = function(id, dataBind, style) {
+            var html = '<div class="styled-select" style="'+style+'">';
+            return '<select id="'+id+'" data-bind="'+dataBind+'"></select>';    
+        };
+        this.GetLabel = function(txt){
+            return '<label>' + txt + '</label>';
+        };
+    };
+    
+    function defaultFilter() {
+        this.setToolTip = function() {
+            
+        };
+        this.setHeader = function() {
+            
+        };
+        this.getHtml = function() {
+              
+        };
+        this.populateData = function(callBack) {
+            
+        };
+    }
+    
+    function postFilter() {
+        this.setToolTip = function() {
+            
+        };
+        this.populateData = function(callBack) {
+            
+        };
+        this.setHeader = function() {
+            
+        };
+        this.getHtml = function() {
+              var helper = new filterHtmlHelper();
+              var html = helper.GetTextInput('searchBox', 'width:160px', "Search!");
+              html += helper.GetLabel('Categories');
+              html += helper.GetSelect('categoryFilter', "options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'", "width:170px");
+              return html;
+        }; 
+    };
+    
+    return {
+        GetFilter : function(type) {
+              switch(filterType) {
+                case 'post':
+                    return new postFilter();
+                default:
+                    return new defaultFilter();
+            }    
+        }
+    };
+})();
 
 function Filters() {
     this.checkFilters = ko.observableArray([]);
@@ -113,12 +179,23 @@ function Filters() {
     this.Categories = ko.observableArray([]);
     this.Category = ko.observable('');
     var self = this;
+    this.SetFilter = function(filterType) {
+        var filter = JKFilters.GetFilter(filterType);
+        filter.getHtml();
+        filter.setToolTip();
+        filter.setHeader();
+        filter.populateData(function() {
+            
+        });
+    };
+    
     this.GetCatId = function() {
         if (this.Category && this.Category()) {
             return this.Category().Id;
         }
         return null;
     };
+    
     this.LoadCategories = function() {
         Ajax.Post("/FilterData/Category", null, function(res) {
             self.Categories(res);
@@ -127,6 +204,9 @@ function Filters() {
     this.Listen = function(func) {
         var timeout;
         var callBack = func;
+        new Opentip("#searchTip", "<p>This is your hub for filtering down results.</p>", "Filtering!", {
+                
+        });
         $("#searchBox").live('keyup', function() {
             window.clearTimeout(timeout);
             timeout = window.setTimeout(function() {
@@ -548,13 +628,14 @@ var Application = (function() {
                 var model = modelMap[state.data.modelKey];
                 Ajax.UpdateView(state.url, JSON.stringify(state.data.id), function() {
                     model.Populate();
+                    fitlers.
                     ko.cleanNode(document.getElementById("mainContent"));
                     ko.applyBindings(model, document.getElementById("mainContent"));
                     $("#mainContent").fadeIn("slow");
                 });
             });
             ko.applyBindings(filters, document.getElementById("filters"));
-            ko.applyBindings(user, document.getElementById("loginInformation"));
+            ko.applyBindings(user, document.getElementById("loginInformation")); 
         },
         FetchModel : function(key) {
             return modelMap[key];
@@ -623,6 +704,7 @@ var Application = (function() {
         }
     };
 })();
+
 
 vex.defaultOptions.className = 'vex-theme-os';
 var open = true;

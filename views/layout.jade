@@ -6,6 +6,7 @@ html
         link(rel='stylesheet', href='/stylesheets/dropzone.css') 
         link(rel='stylesheet', href='/stylesheets/toastr.css')
         link(rel='stylesheet', href='/stylesheets/vex.css')
+        link(rel='stylesheet', href='/stylesheets/opentip.css')
         link(rel='stylesheet', href='/stylesheets/vex-theme-os.css')
     body
         block content 
@@ -19,6 +20,7 @@ html
         script(src='/javascripts/knockout-2.2.0.js')
         script(src='/javascripts/native.history.min.js')
         script(src='/javascripts/dropzone.js')
+        script(src='/javascripts/opentip-native.js') 
         script(src='/javascripts/Application.js') 
         #content.content-wrapper 
             header.headerStyle.component
@@ -29,38 +31,36 @@ html
                         div#titleBar.content-wrapper
                             hgroup.title
                                 h1 Barter Faire
-                                h2 A way to buy and sell a bunch of shit on the internet easily and securely. 
-                    section#loginInformation.loginInfoSection 
-                        div(data-bind="if: name")
-                            span.sexyFont
-                                Welcome back, 
-                                span(data-bind="text: name")
-                            ul
-                                li
-                                    button.topMenuButton(data-bind="click: manageAccount") Manage Account                            
-                                li
-                                    button.topMenuButton(data-bind="click: logOut") Log Off                         
-                        div(data-bind="ifnot: name")
-                            ul
-                                li
-                                    button.topMenuButton(onclick="Application.Transition('register')") Register 
-                                li
-                                    button.topMenuButton(onclick="Application.Transition('login')") Log-in 
+                                h2 
+                                    p(style="margin-left:24px;font-size: 14px;line-height: 0px;") A way to buy and sell together with your neighbors. 
+            section#loginInformation.loginInfoSection 
+                div(data-bind="if: name")
+                    span.sexyFont Welcome back, 
+                        span(data-bind="text: name")
+                    ul
+                        li
+                            button.topMenuButton(data-bind="click: manageAccount") 
+                                img(src="/Images/mail.png")
+                        li
+                            button.topMenuButton(data-bind="click: manageAccount") Manage Account                            
+                        li
+                            button.topMenuButton(data-bind="click: logOut") Log Off                         
+                div(data-bind="ifnot: name")
+                    ul
+                        li
+                            button.topMenuButton(onclick="Application.Transition('register')") Register 
+                        li
+                            button.topMenuButton(onclick="Application.Transition('login')") Log-in 
         div#body
             div.leftToolBox.component
                 span
-                    p(style="font-weight: bold;font-size: 18px;") Find stuff fast!
-                        img(src="/Images/help.gif", style="margin-left:5px")
+                    p#toolBoxHeader(style="font-weight: bold;font-size: 18px;") Find stuff fast!
+                        img#searchTip(src="/Images/help.gif", style="margin-left:5px")
                 div#filters(style="float:left")
-                    div
-                        input#searchBox(style="width:160px" type="text" placeholder="Search!")
-                    label
-                        Categories
-                    div.styled-select(style="width:170px")
-                        select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'")                    
+                                        
                 div#tool(style="margin-left:175px;margin-top:90px; cursor: pointer;", onclick="toggleTools()")
                     img#leftToolHandle(src="/Images/up.png")                
-            div#mainContent.component(style="display: block;background: #fff;padding: 2px 2px 25px 25px;border-radius: 15px;border: 2px dashed #B5DDDB;")
+            div#mainContent.component(style="display: block;background: #fff;padding: 2px 2px 25px 0px;border-radius: 15px;border: 2px dashed #B5DDDB;")
 script(type='text/javascript').
     var BarterWindow = window;
     $(document).ready(function () {

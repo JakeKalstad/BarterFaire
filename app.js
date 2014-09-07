@@ -20,7 +20,7 @@ var filterdata = require('./routes/filterdata');
 var post = require('./routes/post');
 var dev = require('./routes/dev');
 
-var db = mongo.db("mongodb://localhost:27017/", {
+var db = mongo.db(process.env.MONGOHQ_URL, {
     native_parser : true
 });
 var dataService = dataService.GetDataService(db);
