@@ -1,7 +1,7 @@
-button.topMenuButton(style="margin-left: 35px;", onclick="Application.Transition('createPost')") Create a posting here in 
+button.topMenuButton(style="width: 900px;margin-left: 25px;", onclick="Application.Transition('createPost')") Create a posting here in 
     span(data-bind="text:state")
-h2 Select your location
-div(data-bind="foreach: grouped")
+h2.listHeader Select A County!
+div(data-bind="foreach: grouped", style="margin-left: 55px;")
     ol(style="display: inline-table;", data-bind="foreach: $data")
         li
             button.locationButton(data-bind="click: $parents[1].LoadPosts")

@@ -330,7 +330,7 @@ function PostDetail(postId) {
                 complete: function() {},  //  A function that gets called after every slide animation
                 keys: true,               //  Enable keyboard (left, right) arrow shortcuts
                 dots: true,               //  Display dot navigation
-                fluid: false              //  Support responsive design. May break non-responsive designs
+                fluid: true              //  Support responsive design. May break non-responsive designs
             });
              var unslider = $('.banner').unslider(); 
             $('.unslider-arrow').click(function() {
@@ -395,7 +395,7 @@ function StateModel() {
     };
 
     this.grouped = ko.computed(function() {
-        return Extensions.Group(self.States(), 12);
+        return Extensions.Group(self.States(), 10);
     }, this);
 
     this.loadStates = function() {
@@ -421,7 +421,7 @@ function LocationModel(id) {
             Value : $("#searchBox").val(),
             Type : "location"
         }, {
-            Field : "Category",
+            Field : "categoryId",
             Value : Application.GetFilters().GetCatId(),
             Type : "location"
         }];

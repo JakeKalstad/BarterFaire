@@ -46,10 +46,9 @@ router.post('/createpost', function(req, res){
     });
 });
 
-router.post('/GetCreationData', function(req, res) {
-    var state = req.body.state;
+router.post('/GetCreationData', function(req, res) { 
     req.dataService.Categories.Get(function(err, cats) { 
-        req.dataService.Locations.GetLocations(state, function(locs) { 
+        req.dataService.Locations.GetLocations({ id : req.body.state}, function(locs) { 
             res.send({ Locations:locs, Categories:cats });  
         });
     });

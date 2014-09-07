@@ -5,8 +5,19 @@ function Locations(ds) {
     this.ds = ds;
     this.collection = this.db.collection('locations');
     var self = this;
-    this.GetLocations = function (stateId, callBack) {
+    this.GetLocations = function (stateReq, callBack) {  
         console.log('Get Locations');
+        console.log(stateReq);
+        console.log(stateReq.filters);
+        var filterSet = {};
+        stateReq.filters = stateReq.filters || [];
+        stateReq.filters.forEach(function(fil) {
+            if(fil.Value) {
+                filterSet[fil.Field] = fil.Value;
+            }
+        });
+        console.log("***********");
+        console.log(filterSet);
         this.ds._Get(this.collection, function(err, locations) {
             console.log('Retrieved Locations');
             self.ds.Posts.Get(function(err, posts) {  
@@ -14,18 +25,16 @@ function Locations(ds) {
                 var countHash = new Object();
                 posts.forEach(function(post) { 
                     if(countHash[post.LocationId]){
-                        countHash[post.LocationId]++;
-                        console.log(post.LocationId);
+                        countHash[post.LocationId]++; 
                     }
                     else countHash[post.LocationId] = 1;
                 });
                 locations.forEach(function(loc){
-                    console.log(countHash[loc._id]);
                    loc.Count = countHash[loc._id] || 0; 
                 });
                 callBack(locations); 
-            });
-        }, {stateId:ObjectId(stateId)});
+            }, filterSet);
+        }, {stateId:ObjectId(stateReq.id)});
     };
 }
 

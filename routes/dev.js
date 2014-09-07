@@ -11,10 +11,7 @@ var states = [
         "Name": "Alaska",
         "abbreviation": "AK"
     },
-    {
-        "Name": "American Samoa",
-        "abbreviation": "AS"
-    },
+   
     {
         "Name": "Arizona",
         "abbreviation": "AZ"
@@ -40,24 +37,12 @@ var states = [
         "abbreviation": "DE"
     },
     {
-        "Name": "District Of Columbia",
-        "abbreviation": "DC"
-    },
-    {
-        "Name": "Federated States Of Micronesia",
-        "abbreviation": "FM"
-    },
-    {
         "Name": "Florida",
         "abbreviation": "FL"
     },
     {
         "Name": "Georgia",
         "abbreviation": "GA"
-    },
-    {
-        "Name": "Guam",
-        "abbreviation": "GU"
     },
     {
         "Name": "Hawaii",
@@ -94,10 +79,6 @@ var states = [
     {
         "Name": "Maine",
         "abbreviation": "ME"
-    },
-    {
-        "Name": "Marshall Islands",
-        "abbreviation": "MH"
     },
     {
         "Name": "Maryland",
@@ -159,10 +140,7 @@ var states = [
         "Name": "North Dakota",
         "abbreviation": "ND"
     },
-    {
-        "Name": "Northern Mariana Islands",
-        "abbreviation": "MP"
-    },
+     
     {
         "Name": "Ohio",
         "abbreviation": "OH"
@@ -176,16 +154,8 @@ var states = [
         "abbreviation": "OR"
     },
     {
-        "Name": "Palau",
-        "abbreviation": "PW"
-    },
-    {
         "Name": "Pennsylvania",
         "abbreviation": "PA"
-    },
-    {
-        "Name": "Puerto Rico",
-        "abbreviation": "PR"
     },
     {
         "Name": "Rhode Island",
@@ -216,10 +186,6 @@ var states = [
         "abbreviation": "VT"
     },
     {
-        "Name": "Virgin Islands",
-        "abbreviation": "VI"
-    },
-    {
         "Name": "Virginia",
         "abbreviation": "VA"
     },
@@ -239,6 +205,40 @@ var states = [
         "Name": "Wyoming",
         "abbreviation": "WY"
     }
+    /*
+     * {
+        "Name": "American Samoa",
+        "abbreviation": "AS"
+    },
+    {
+        "Name": "Virgin Islands",
+        "abbreviation": "VI"
+    },
+    {
+        "Name": "Federated States Of Micronesia",
+        "abbreviation": "FM"
+    },
+    {
+        "Name": "Palau",
+        "abbreviation": "PW"
+    },
+    {
+        "Name": "Puerto Rico",
+        "abbreviation": "PR"
+    },
+    {
+        "Name": "Guam",
+        "abbreviation": "GU"
+    },
+    {
+        "Name": "Marshall Islands",
+        "abbreviation": "MH"
+    },
+    {
+        "Name": "Northern Mariana Islands",
+        "abbreviation": "MP"
+    },
+    */ 
 ];
 
 var categories = [

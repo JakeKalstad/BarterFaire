@@ -64,7 +64,7 @@ html {
 }
 #content {
 	width: 1300px;
-	height: 150px;
+	height: 180px;
 	margin-left: 0;
 }
 .loginInfoSection{
@@ -185,14 +185,25 @@ h5, h6 {
     padding: 15px;
     border-radius: 0px 0px 50px 0px;
 }
+.listHeader {
+    background: darkgrey;
+    border-radius: 45px;
+    box-shadow: 2px 2px lightgrey;
+    width: 300px;
+    margin-left: 30%;
+    text-align: center;
+}
 .leftToolBox {
     background: #FEFEFA;
     width: 225px;
     border: 2px dashed #B5DDDB;
-    border-radius: 0px 85px 85px 0px;
+    border-radius: 0px 15px 15px 0px;
     position: fixed;
     height: 400px;
     float: left;
+}
+.stateData {
+    width: 180px;
 }
 /* main layout
 ----------------------------------------------------------*/
@@ -491,7 +502,7 @@ button.locationButton {
     box-shadow: 0px 1px 3px rgba(000,000,000,0.5), inset 0px 0px 2px rgba(255,255,255,1);
     text-shadow: 0px -1px 0px rgba(000,000,000,0.2), 0px 1px 0px rgba(255,255,255,0.4);
     text-align: left;
-    width: 450px; 
+    width: 350px; 
 }
 
 button.locationButton:hover {
