@@ -5,10 +5,10 @@ router.post('/index', function(req, res) {
   res.render('viewposts');
 });
 
-router.post('/GetPosts', function(req, res) {
+router.post('/GetPosts', function(req, res) { 
     req.dataService.Posts.GetPostPerLocation(req.body.locationId, function(result) {
       res.send(result); 
-    });
+    }, req.body.filters);
 });
 
 router.post('/create', function(req, res) {

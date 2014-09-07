@@ -38,9 +38,8 @@ html
                     span.sexyFont Welcome back, 
                         span(data-bind="text: name")
                     ul
-                        li
-                            button.topMenuButton(data-bind="click: manageAccount") 
-                                img(src="/Images/mail.png")
+                        li 
+                            img(data-bind="click: manageAccount, attr: { src: mailImg }")
                         li
                             button.topMenuButton(data-bind="click: manageAccount") Manage Account                            
                         li

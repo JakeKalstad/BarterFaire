@@ -1,5 +1,15 @@
 var ObjectId = require('mongodb').ObjectID;
 
+function getFilters(filters) {
+    var filterSet = {};
+        filters = filters || [];
+        filters.forEach(function(fil) {
+            if(fil.Value) {
+                filterSet[fil.Field] = fil.Value;
+            }
+        });
+        return filterSet; 
+}
 function Locations(ds) {
     this.db = ds.db;
     this.ds = ds;
@@ -7,17 +17,7 @@ function Locations(ds) {
     var self = this;
     this.GetLocations = function (stateReq, callBack) {  
         console.log('Get Locations');
-        console.log(stateReq);
-        console.log(stateReq.filters);
-        var filterSet = {};
-        stateReq.filters = stateReq.filters || [];
-        stateReq.filters.forEach(function(fil) {
-            if(fil.Value) {
-                filterSet[fil.Field] = fil.Value;
-            }
-        });
-        console.log("***********");
-        console.log(filterSet);
+       var filter = getFilters(stateReq.filters);
         this.ds._Get(this.collection, function(err, locations) {
             console.log('Retrieved Locations');
             self.ds.Posts.Get(function(err, posts) {  
@@ -33,7 +33,7 @@ function Locations(ds) {
                    loc.Count = countHash[loc._id] || 0; 
                 });
                 callBack(locations); 
-            }, filterSet);
+            }, filter);
         }, {stateId:ObjectId(stateReq.id)});
     };
 }
@@ -68,8 +68,14 @@ function Posts(ds) {
             }, { _id : ObjectId(id)});
     };
     
-    this.GetPostPerLocation = function(id, callBack) {
-        self .ds.Categories.Get(function(err, cat){
+    this.GetPostPerLocation = function(id, callBack, filterParams) {
+        var filters = getFilters(filterParams);
+        console.log('***********');
+        console.log(filters);
+        filters.LocationId = id.toString();
+        console.log(filters);
+        console.log('***********');
+        self.ds.Categories.Get(function(err, cat){
             var catHash = new Object();
             cat.forEach(function(cat) {
                 catHash[cat._id] = cat.Name;
@@ -79,7 +85,7 @@ function Posts(ds) {
                    post.Category =  catHash[post.categoryId];
                 });
                 callBack(resp);
-                }, { LocationId: id.toString()});
+                }, filters);
         });
     };
 }

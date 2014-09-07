@@ -106,86 +106,127 @@ var Dialog = (function() {
     };
 })();
 /*div
-                        input#searchBox(style="width:160px" type="text" placeholder="Search!")
-                    label
-                        Categories
-                    div.styled-select(style="width:170px")
-                        select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'")
-*/
+ input#searchBox(style="width:160px" type="text" placeholder="Search!")
+ label
+ Categories
+ div.styled-select(style="width:170px")
+ select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'")
+ */
 var JKFilters = (function() {
     function filterHtmlHelper() {
         this.GetTextInput = function(id, style, placeHolder) {
-            return '<input id="'+id+'" stlye="'+style+'" type="text" placeholder="'+placeHolder+'"/>';
+            return '<input id="' + id + '" style="' + style + '" type="text" placeholder="' + placeHolder + '"/>';
         };
         this.GetSelect = function(id, dataBind, style) {
-            var html = '<div class="styled-select" style="'+style+'">';
-            return '<select id="'+id+'" data-bind="'+dataBind+'"></select>';    
+            var html = '<div class="styled-select" style="' + style + '">';
+            return '<select id="' + id + '" data-bind="' + dataBind + '"></select>';
         };
-        this.GetLabel = function(txt){
+        this.GetLabel = function(txt) {
             return '<label>' + txt + '</label>';
         };
-    };
+    }; 
     
     function defaultFilter() {
+        this.Run = function(model, callBack) { 
+            this.setToolTip();
+            this.setHeader();
+            this.populateData(model, function(res) {
+                callBack(res);
+            });
+        };
+
         this.setToolTip = function() {
-            
+
         };
         this.setHeader = function() {
-            
+
         };
         this.getHtml = function() {
-              
+
         };
         this.populateData = function(callBack) {
-            
+
         };
     }
-    
+
     function postFilter() {
-        this.setToolTip = function() {
-            
+        this.Run = function(model, callBack) {
+            this.setToolTip();
+            this.setHeader();
+            this.populateData(model, function(res) {
+                callBack(res);
+            });
         };
-        this.populateData = function(callBack) {
-            
+
+        this.setToolTip = function() {
+
+        };
+        this.populateData = function(model, callBack) {
+            this.LoadCategories(function(res) { 
+                model.Categories(res);
+                callBack(res);
+            });
         };
         this.setHeader = function() {
-            
+
         };
         this.getHtml = function() {
-              var helper = new filterHtmlHelper();
-              var html = helper.GetTextInput('searchBox', 'width:160px', "Search!");
-              html += helper.GetLabel('Categories');
-              html += helper.GetSelect('categoryFilter', "options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'", "width:170px");
-              return html;
-        }; 
+            var helper = new filterHtmlHelper();
+            var html = helper.GetTextInput('searchBox', 'width:160px', "Search!");
+            html += helper.GetLabel('Categories');
+            html += helper.GetSelect('categoryFilter', "options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'", "width:170px");
+            return html;
+        };
+
+        this.LoadCategories = function(callBack) {
+            Ajax.Post("/FilterData/Category", null, function(res) {
+                callBack(res);
+            });
+        };
+         
+        this.Listen = function(func) {
+            var timeout;
+            var callBack = func;
+
+            $("#searchBox").die();
+            $("#categoryFilter").die();
+            $("#searchBox").live('keyup', function() {
+                window.clearTimeout(timeout);
+                timeout = window.setTimeout(function() {
+                    callBack();
+                }, 500);
+            });
+            $("#categoryFilter").live('change', function() {
+                window.clearTimeout(timeout);
+                timeout = window.setTimeout(function() {
+                    callBack();
+                }, 500);
+            });
+        };
     };
-    
+
     return {
-        GetFilter : function(type) {
-              switch(filterType) {
-                case 'post':
-                    return new postFilter();
-                default:
-                    return new defaultFilter();
-            }    
+        GetFilter : function(type) {            
+            switch(type) {
+            case 'post':
+            case 'location':
+                return new postFilter();
+            default:
+                return new defaultFilter();
+            }
         }
     };
 })();
 
 function Filters() {
-    this.checkFilters = ko.observableArray([]);
-    this.textFilters = ko.observableArray([]);
-    this.selectFilters = ko.observableArray([]);
     this.Categories = ko.observableArray([]);
     this.Category = ko.observable('');
     var self = this;
-    this.SetFilter = function(filterType) {
+    this.SetFilter = function(filterType, listen) {
         var filter = JKFilters.GetFilter(filterType);
-        filter.getHtml();
-        filter.setToolTip();
-        filter.setHeader();
-        filter.populateData(function() {
-            
+        $("#filters").html(filter.getHtml());
+        filter.Run(self, function(res) {
+            filter.Listen(listen);
         });
     };
     
@@ -195,62 +236,18 @@ function Filters() {
         }
         return null;
     };
-    
-    this.LoadCategories = function() {
-        Ajax.Post("/FilterData/Category", null, function(res) {
-            self.Categories(res);
-        });
-    };
-    this.Listen = function(func) {
-        var timeout;
-        var callBack = func;
-        new Opentip("#searchTip", "<p>This is your hub for filtering down results.</p>", "Filtering!", {
-                
-        });
-        $("#searchBox").live('keyup', function() {
-            window.clearTimeout(timeout);
-            timeout = window.setTimeout(function() {
-                callBack();
-            }, 500);
-        });
-        $("#categoryFilter").live('change', function() {
-            window.clearTimeout(timeout);
-            timeout = window.setTimeout(function() {
-                callBack();
-            }, 500);
-        });
-    };
-    this.AddCheck = function(name, value) {
-        this.checkFilters.push({
-            name : name,
-            value : value
-        });
-    };
-    this.AddText = function(name, value) {
-        this.textFilters.push({
-            name : name,
-            value : value
-        });
-    };
-    this.AddSelect = function(name, value) {
-        this.selectFilters.push({
-            name : name,
-            value : value
-        });
-    };
-
-    this.AddCheck("Something", "true");
-    this.AddCheck("Something Else", "true");
-    this.AddSelect("Category", []);
-    this.LoadCategories();
-}
+};
 
 function User() {
     this.id = ko.observable('');
     this.name = ko.observable('');
     this.email = ko.observable('');
+    this.messages = ko.observableArray([]);
     this.locationDefault = ko.observable(-1);
     var self = this;
+    this.mailImg = ko.computed(function() {
+        return self.messages().length > 0 ? '/Images/mailRecvd.png' : '/Images/mail.png';
+    });
     this.setUser = function(res) {
         if (!res)
             return;
@@ -305,7 +302,7 @@ function PostCreate() {
     var self = this;
     this.message = '';
     this.AddImages = function() {
-        alert('addImages!');
+
     };
     function finish() {
         toastr.success(self.message, "Success!");
@@ -344,9 +341,9 @@ function PostCreate() {
     };
 
     function create(onFail) {
-        if(!Application.GetUser().isOnline()) {
-                onFail();
-                return;
+        if (!Application.GetUser().isOnline()) {
+            onFail();
+            return;
         }
         Ajax.Post('/Post/CreatePost', JSON.stringify({
             Title : self.Title(),
@@ -393,8 +390,8 @@ function PostDetail(postId) {
     this.Body = ko.observable('');
     this.Location = ko.observable('');
     this.Category = ko.observable('');
-    this.imagePaths = ko.observableArray([]); 
-    var self = this;  
+    this.imagePaths = ko.observableArray([]);
+    var self = this;
     this.Populate = function() {
         Ajax.Post('/Post/GetPost', JSON.stringify({
             postId : this.id
@@ -405,16 +402,17 @@ function PostDetail(postId) {
             self.Category(result.Category);
             self.imagePaths(result.Images);
             $('.banner').unslider({
-                speed: 500,               //  The speed to animate each slide (in milliseconds)
-                delay: 3000,              //  The delay between slide animations (in milliseconds)
-                complete: function() {},  //  A function that gets called after every slide animation
-                keys: true,               //  Enable keyboard (left, right) arrow shortcuts
-                dots: true,               //  Display dot navigation
-                fluid: true              //  Support responsive design. May break non-responsive designs
+                speed : 500, //  The speed to animate each slide (in milliseconds)
+                delay : 3000, //  The delay between slide animations (in milliseconds)
+                complete : function() {
+                }, //  A function that gets called after every slide animation
+                keys : true, //  Enable keyboard (left, right) arrow shortcuts
+                dots : true, //  Display dot navigation
+                fluid : true //  Support responsive design. May break non-responsive designs
             });
-             var unslider = $('.banner').unslider(); 
+            var unslider = $('.banner').unslider();
             $('.unslider-arrow').click(function() {
-                var fn = this.className.split(' ')[2]; 
+                var fn = this.className.split(' ')[2];
                 unslider.data('unslider')[fn]();
             });
         });
@@ -435,7 +433,7 @@ function PostModel(locationId) {
             Value : $("#searchBox").val(),
             Type : "post"
         }, {
-            Field : "Category",
+            Field : "categoryId",
             Value : Application.GetFilters().GetCatId(),
             Type : "post"
         }];
@@ -451,8 +449,7 @@ function PostModel(locationId) {
         });
     };
     this.Populate = function() {
-        Application.GetFilters().Listen(this.loadPosts);
-        this.loadPosts();
+        self.loadPosts();
     };
 }
 
@@ -484,8 +481,7 @@ function StateModel() {
         });
     };
     this.Populate = function() {
-        this.loadStates();
-        Application.GetFilters().Listen(this.loadStates);
+        self.loadStates();
     };
 }
 
@@ -529,8 +525,7 @@ function LocationModel(id) {
     };
 
     this.Populate = function() {
-        this.loadLocations();
-        Application.GetFilters().Listen(this.loadLocations);
+        self.loadLocations();
     };
 }
 
@@ -544,7 +539,6 @@ function Login() {
         }), function(res) {
             if (res.Success) {
                 toastr.success("Welcome back, hope you find something cool.", "You're in!");
-                alert(res.Id);
                 Application.GetUser().setUser(res);
                 Application.Transition("home");
             } else {
@@ -586,8 +580,8 @@ function Register(id) {
 
     this.Populate = function() {
         var user = Application.GetUser();
-        this.userName(user.name());
-        this.email(user.email());
+        listen.userName(user.name());
+        listen.email(user.email());
     };
 
     this.Edit = function(vm, evt) {
@@ -627,14 +621,15 @@ var Application = (function() {
                 // Note: We are using History.getState() instead of event.state
                 var model = modelMap[state.data.modelKey];
                 Ajax.UpdateView(state.url, JSON.stringify(state.data.id), function() {
-                    model.Populate(); 
+                    model.Populate();
                     ko.cleanNode(document.getElementById("mainContent"));
                     ko.applyBindings(model, document.getElementById("mainContent"));
+                    ko.applyBindings(filters, document.getElementById("filters"));
                     $("#mainContent").fadeIn("slow");
                 });
             });
             ko.applyBindings(filters, document.getElementById("filters"));
-            ko.applyBindings(user, document.getElementById("loginInformation")); 
+            ko.applyBindings(user, document.getElementById("loginInformation"));
         },
         FetchModel : function(key) {
             return modelMap[key];
@@ -696,6 +691,8 @@ var Application = (function() {
             }
             model.id = id;
             modelMap[trns] = model;
+            ko.cleanNode(document.getElementById("filters"));
+            filters.SetFilter(trns, model.Populate);
             History.pushState({
                 modelKey : trns,
                 id : id
@@ -703,7 +700,6 @@ var Application = (function() {
         }
     };
 })();
-
 
 vex.defaultOptions.className = 'vex-theme-os';
 var open = true;
