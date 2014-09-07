@@ -9,7 +9,7 @@ router.post('/getallstates', function(req, res) {
 	req.dataService.States.Get(function (err, items) {
 		items.forEach(function(itm) { 
 			itm.Id = itm._id; 
-			itm.imagePath = '/Images/States/' + itm.Name.trim().toLowerCase().replace(' ', '') + ".png";
+			itm.imagePath = '/Images/States/' + itm.Name.trim().replace(/\s+/g, '').replace(' ', '').toLowerCase() + ".png";
 		});
         res.json(items); 
     });

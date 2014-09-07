@@ -118,7 +118,7 @@ function Filters() {
             return this.Category().Id;
         }
         return null;
-    }
+    };
     this.LoadCategories = function() {
         Ajax.Post("/FilterData/Category", null, function(res) {
             self.Categories(res);
@@ -264,6 +264,10 @@ function PostCreate() {
     };
 
     function create(onFail) {
+        if(!Application.GetUser().isOnline()) {
+                onFail();
+                return;
+        }
         Ajax.Post('/Post/CreatePost', JSON.stringify({
             Title : self.Title(),
             Body : self.Body(),
@@ -309,41 +313,30 @@ function PostDetail(postId) {
     this.Body = ko.observable('');
     this.Location = ko.observable('');
     this.Category = ko.observable('');
-    this.imagePaths = ko.observableArray([]);
-    this.animations = ['firstanimation', 'secondanimation', 'thirdanimation', 'fourthanimation', 'fifthanimation'];
-    this.animationId = 0;
-    var checked = false;
-    this.isChecked = function() {
-        if (checked)
-            return "";
-        checked = true;
-        return "checked";
-    };
-    var self = this;
-    this.getAnimation = function() {
-        if (self.animationId == 5)
-            self.animationId = 0;
-        return self.animations[self.animationId++];
-    };
-    var controlId = 1;
-    var isLabel = false;
-    this.getcontrolId = function() {
-        if (isLabel) {
-            isLabel = false;
-            return "control" + controlId++;
-        }
-        isLabel = true;
-        return "control" + controlId;
-    };
+    this.imagePaths = ko.observableArray([]); 
+    var self = this;  
     this.Populate = function() {
         Ajax.Post('/Post/GetPost', JSON.stringify({
-            postId : postId
+            postId : this.id
         }), function(result) {
             self.Title(result.Title);
             self.Body(result.Body);
             self.Location(result.Location);
             self.Category(result.Category);
             self.imagePaths(result.Images);
+            $('.banner').unslider({
+                speed: 500,               //  The speed to animate each slide (in milliseconds)
+                delay: 3000,              //  The delay between slide animations (in milliseconds)
+                complete: function() {},  //  A function that gets called after every slide animation
+                keys: true,               //  Enable keyboard (left, right) arrow shortcuts
+                dots: true,               //  Display dot navigation
+                fluid: false              //  Support responsive design. May break non-responsive designs
+            });
+             var unslider = $('.banner').unslider(); 
+            $('.unslider-arrow').click(function() {
+                var fn = this.className.split(' ')[2]; 
+                unslider.data('unslider')[fn]();
+            });
         });
     };
 }

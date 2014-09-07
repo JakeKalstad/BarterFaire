@@ -11,12 +11,12 @@ function AccountResult(session, exception) {
 
 function setSession(session, user) {
     if(user){
-    	session.Id = user.Id;
+    	session.Id = user._id;
     	session.UserName = user.UserName;
     	session.Email = user.Email;
     	return;
 	}
-	session.Id = -1;
+	session.Id = null;
 	session.UserName = '';
 	session.Email = '';
 }

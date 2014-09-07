@@ -29,6 +29,11 @@ router.post('/getpost', function(req, res) {
 
 router.post('/createpost', function(req, res){
     req.body.UserDataId = req.session.Id;
+    console.log(req.session);
+    if(!req.body.UserDataId) {
+        res.send({ success : false, message : "Looks like you're not signed in, please sign in before making a post." });
+        return;
+    }
     console.log("logging request for create post");
     console.log(req);
     req.dataService.Posts.Insert(req.body, function(result) { 

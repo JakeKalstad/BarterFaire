@@ -1,10 +1,12 @@
 h3.postTitle(data-bind="text: Title")
-p(style="background: white;width: 980px;padding: 5px;border-radius: 15px;", data-bind="text:Body") 
-div.slider(style="margin-left: 225px;") 
-    div(data-bind="foreach: imagePaths")
-        input(data-bind="attr: { 'id': $parent.getcontrolId(), 'checked' : $parent.isChecked() }", type="radio" name="controls")
-        label(data-bind="attr: { 'for': $parent.getcontrolId() }")
-    div.sliderinner
+p(style="background: white;width: 980px;padding: 5px;border-radius: 15px;", data-bind="text:Body")
+div(data-bind="if: imagePaths().length > 0") 
+    a.imgTabBtn.unslider-arrow.prev(href="#")
+        img(src='../Images/slider-arrow-left.png')
+    a.imgTabBtn.unslider-arrow.next(href="#", style="padding-left:25px")
+        img(src='../Images/slider-arrow-right.png')
+    div.banner
         ul(data-bind="foreach: imagePaths")
             li
                 img(data-bind="attr: { src: $data }", alt="")
+            
