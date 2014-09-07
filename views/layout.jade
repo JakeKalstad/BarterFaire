@@ -48,14 +48,16 @@ html
                                     button.topMenuButton(onclick="Application.Transition('login')") Log-in 
         div#body
             div.leftToolBox.component
-                p Where can we take this?
+                span
+                    p(style="font-weight: bold;font-size: 18px;") Find stuff fast!
+                        img(src="/Images/help.gif", style="margin-left:5px")
                 div#filters(style="float:left")
                     div
                         input#searchBox(style="width:160px" type="text" placeholder="Search!")
                     label
                         Categories
-                    div.styled-select(style="width:140px")
-                        select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Filter by Category...'")                    
+                    div.styled-select(style="width:170px")
+                        select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'")                    
                 div#tool(style="margin-left:175px;margin-top:90px; cursor: pointer;", onclick="toggleTools()")
                     img#leftToolHandle(src="/Images/up.png")                
             div#mainContent.component(style="display: block;background: #fff;padding: 2px 2px 25px 25px;border-radius: 15px;border: 2px dashed #B5DDDB;")
