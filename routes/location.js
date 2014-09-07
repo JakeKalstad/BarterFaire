@@ -6,7 +6,7 @@ router.post('/index', function(req, res) {
 });
 router.post('/getlocationbystate', function(req,res) {
     req.dataService.Locations.GetLocations(req.body.id, function(locations) {
-        locations.forEach(function(loc) { loc.Count = 1; });
+        locations.sort(function(l) { return -l.Count;});  
         res.send({ state:"where ever", locations : locations});
     });
 });

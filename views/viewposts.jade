@@ -4,5 +4,5 @@ div(data-bind="foreach: grouped")
     ol(style="display: inline-table;", data-bind="foreach: $data")  
         li
             button.locationButton(data-bind="click: $parents[1].ViewPost")
-                span.locationName(data-bind="text: Name")
+                span.locationName(data-bind="text: Title")
                 span(style="float: right;", data-bind="text: Category")

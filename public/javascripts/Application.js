@@ -267,8 +267,8 @@ function PostCreate() {
         Ajax.Post('/Post/CreatePost', JSON.stringify({
             Title : self.Title(),
             Body : self.Body(),
-            LocationId : self.Location().Id,
-            categoryId : self.Category().Id,
+            LocationId : self.Location()._id,
+            categoryId : self.Category()._id,
             imageFiles : self.images
         }), function(result) {
             if (result.success) {
@@ -368,7 +368,7 @@ function PostModel(locationId) {
         }];
     };
     this.ViewPost = function(vm, ev) {
-        Application.Transition("post_detail", vm.Id);
+        Application.Transition("post_detail", vm._id);
     };
     this.loadPosts = function() {
         Ajax.Post('/Post/GetPosts', Extensions.GetData({
@@ -397,7 +397,7 @@ function StateModel() {
     };
 
     this.LoadLocations = function(vm, evt) {
-        self.StateId = vm.Id;
+        self.StateId = vm._id;
         Application.Transition("location", self.StateId);
     };
 
@@ -439,8 +439,8 @@ function LocationModel(id) {
                 alert("LETS DO IT");
             });
         }
-        this.locationId = vm.Id;
-        Application.Transition("post", vm.Id);
+        this.locationId = vm._id;
+        Application.Transition("post", vm._id);
     };
     this.grouped = ko.computed(function() {
         return Extensions.Group(self.Locations(), 9);

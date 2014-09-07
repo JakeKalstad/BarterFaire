@@ -259,7 +259,7 @@ function complete(res) {
 function populate(coll, data, req, res, callback) {
     req.dataService._Remove(coll, {}, function(err, numberRemoved) { 
        console.log("Removed" + numberRemoved + " records from collection: " + coll);
-       req.dataService._Insert(coll, data, function(err1, result) { 
+       req.dataService._Insert(coll, data, function(result) { 
             if(callback) 
                 callback(result); 
             complete(res);     
@@ -351,14 +351,16 @@ function populateLocations(states, req, res) {
 
 router.post('/seed', function(req,res) { 
     popCount++; 
+    req.dataService.Posts.RemoveAll();
+     
     req.dataService.Locations.Remove({}, function(err, numberRemoved) { 
         console.log("removed locations");
-        populate('states', states, req, res, function(result) { 
+        populate(req.dataService.States.collection, states, req, res, function(result) { 
             popCount++; 
             populateLocations(result, req, res);
         });
         popCount++; 
-        populate('categories', categories, req, res);
+        populate(req.dataService.Categories.collection, categories, req, res);
     });
 });
 

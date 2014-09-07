@@ -4,10 +4,28 @@ function Locations(ds) {
     this.db = ds.db;
     this.ds = ds;
     this.collection = this.db.collection('locations');
+    var self = this;
     this.GetLocations = function (stateId, callBack) {
-        this.ds._Get(this.collection, function(err, locations) { 
-            callBack(locations); 
-        },{stateId:ObjectId(stateId)});
+        console.log('Get Locations');
+        this.ds._Get(this.collection, function(err, locations) {
+            console.log('Retrieved Locations');
+            self.ds.Posts.Get(function(err, posts) {  
+                console.log('Retrieved Posts');              
+                var countHash = new Object();
+                posts.forEach(function(post) { 
+                    if(countHash[post.LocationId]){
+                        countHash[post.LocationId]++;
+                        console.log(post.LocationId);
+                    }
+                    else countHash[post.LocationId] = 1;
+                });
+                locations.forEach(function(loc){
+                    console.log(countHash[loc._id]);
+                   loc.Count = countHash[loc._id] || 0; 
+                });
+                callBack(locations); 
+            });
+        }, {stateId:ObjectId(stateId)});
     };
 }
 
@@ -31,10 +49,29 @@ function Posts(ds) {
     this.db = ds.db;
     this.ds = ds;
     this.collection = this.db.collection('posts');
+    var self = this;
+    this.RemoveAll = function() {
+         this.ds._Remove(this.collection, {}, function(err, resp) {});
+    };
     this.GetPost = function(id, callBack) {
         this.ds._Get(this.collection, function(err, resp) {
             callBack(resp[0]);
             }, { _id : ObjectId(id)});
+    };
+    
+    this.GetPostPerLocation = function(id, callBack) {
+        self .ds.Categories.Get(function(err, cat){
+            var catHash = new Object();
+            cat.forEach(function(cat) {
+                catHash[cat._id] = cat.Name;
+            });
+            self.ds._Get(self.collection, function(err, resp) {
+                resp.forEach(function(post) {
+                   post.Category =  catHash[post.categoryId];
+                });
+                callBack(resp);
+                }, { LocationId: id.toString()});
+        });
     };
 }
 
@@ -78,7 +115,8 @@ function DataService(db) {
                handleError(err);  
     	       if(items && items.length > 0) {
     	           callBack(err, items);
-                   console.log("retrieved " + items);
+                   console.log("retrieved ");
+                   console.log(items);
     	       }
     	       else {
     	           console.log('no items retrieved from ' + collection);
@@ -90,7 +128,7 @@ function DataService(db) {
     this._Remove = function(collection, obj, callBack) {
         collection.remove(obj, function(err, coll) {
             handleError(err);
-            callBack(err,coll);
+            callBack(err, coll);
             console.log("removed " + coll);
         });
     };

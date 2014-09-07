@@ -5,8 +5,10 @@ router.post('/index', function(req, res) {
   res.render('viewposts');
 });
 
-router.post('/GetPosts', function(req, res) { 
-  res.render('viewposts');
+router.post('/GetPosts', function(req, res) {
+    req.dataService.Posts.GetPostPerLocation(req.body.locationId, function(result) {
+      res.send(result); 
+    });
 });
 
 router.post('/create', function(req, res) {
@@ -22,15 +24,17 @@ router.post('/getpost', function(req, res) {
         result.Images = new Array();
         result.imageFiles.forEach(function(img) { result.Images.push("/upload/"+img);}); 
         res.send(result);
-    });    
+    });
 });
 
 router.post('/createpost', function(req, res){
-    req.body.UserDataId = req.session.Id; 
+    req.body.UserDataId = req.session.Id;
+    console.log("logging request for create post");
+    console.log(req);
     req.dataService.Posts.Insert(req.body, function(result) { 
-        var id = result[0]._id; 
-        res.send({ 
-            id : id, 
+        var id = result[0]._id;
+        res.send({
+            id : id,
             success : true, 
             message : "Congratulations, you have successfully posted " + req.body.Title + " keep an eye on your inbox for replies!" 
         });
