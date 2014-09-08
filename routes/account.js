@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();  
 
 function AccountResult(session, exception) {
-	this.Id = session.Id; 
+	this.Id = session.Id;
 	this.Success = exception ? false : this.Id != -1;
 	this.UserName = exception ? false : session.UserName;
 	this.Email = exception ? false : session.Email;

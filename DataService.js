@@ -37,7 +37,11 @@ function Locations(ds) {
         }, {stateId:ObjectId(stateReq.id)});
     };
 }
-
+function Messages(ds) {
+    this.db = ds.db;
+    this.ds = ds;
+    this.collection = this.db.collection('messages');
+}
 function Categories(ds) {
     this.db = ds.db;
     this.ds = ds;
@@ -113,6 +117,7 @@ function DataService(db) {
 	this.Users = EntityBlessing(new Users(this));
 	this.States = EntityBlessing(new States(this));
 	this.Posts = EntityBlessing(new Posts(this));
+    this.Messages = EntityBlessing(new Messages(this));
 	
 	function handleError(err) {
         if(!err) return;

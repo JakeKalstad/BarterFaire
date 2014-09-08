@@ -18,6 +18,7 @@ var file = require('./routes/file');
 var filterdata = require('./routes/filterdata');
 var post = require('./routes/post');
 var dev = require('./routes/dev');
+var message = require('./routes/messages');
 
 var db = mongo.db(process.env.MONGOHQ_URL || "mongodb://localhost:27017/", {native_parser : true});
 var dataService = dataService.GetDataService(db);
@@ -53,6 +54,7 @@ app.use('/file', file);
 app.use('/filterdata', filterdata);
 app.use('/post', post);
 app.use('/dev', dev);
+app.use('/message', message);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

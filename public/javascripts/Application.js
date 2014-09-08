@@ -250,6 +250,7 @@ function User() {
     this.locationDefault = ko.observable(-1);
     var self = this;
     this.mailImg = ko.computed(function() {
+        console.log(self.messages());
         return self.messages().length > 0 ? '/Images/mailRecvd.png' : '/Images/mail.png';
     });
     this.setUser = function(res) {
@@ -272,11 +273,14 @@ function User() {
             Application.Transition("home");
         });
     };
+    this.viewMessages = function() {
+        Application.Transition("viewMessages", this.id());
+    };
     this.manageAccount = function() {
         Application.Transition("manageAccount", this.id());
     };
     this.isOnline = ko.computed(function() {
-        return self.id() != -1;
+        return self.id() && self.id() != -1;
     });
     this.getLocationDefault = function() {
         return self.locationDefault;
@@ -308,11 +312,11 @@ function PostCreate() {
     this.AddImages = function() {
 
     };
+    
     function finish() {
         toastr.success(self.message, "Success!");
         Application.Transition("post_detail", self.postId);
-    }
-
+    } 
 
     this.Populate = function() {
         Ajax.Post('/Post/GetCreationData', JSON.stringify({
@@ -396,6 +400,9 @@ function PostDetail(postId) {
     this.Category = ko.observable('');
     this.imagePaths = ko.observableArray([]);
     var self = this;
+    this.sendMessage = function() {
+        Application.Transition('sendMessage', self.id);  
+    };
     this.Populate = function() {
         Ajax.Post('/Post/GetPost', JSON.stringify({
             postId : this.id
@@ -530,6 +537,85 @@ function LocationModel(id) {
 
     this.Populate = function() {
         self.loadLocations();
+    };
+}
+function MessageView(id) {
+    this.title = ko.observable('');
+    this.body = ko.observable('');
+    this.Populate = function() {
+        
+    };
+    this.back = function() {
+        
+    };
+    this.reply = function() {
+        
+    };
+}
+function Message(id) {
+    this.Title = ko.observable('');
+    this.Body = ko.observable('');
+    this.id = id;
+    var self = this; 
+    function create(onFail) {
+        if (!Application.GetUser().isOnline()) {
+            onFail();
+            return;
+        }
+        Ajax.Post('/message/newmessage',  JSON.stringify({ Title : self.Title(), Body : self.Body(), postId : self.id, active : true, userId : Application.GetUser().id }),
+        function(res) {
+            if(res.success) {
+                toastr.success("Message sent! Please make sure to watch your inbox for the sellers reply!", "Success!");
+                Application.Transition('home');
+            }
+            else {
+                toastr.error("Something went wrong, please try to resend shortly", "Uh Oh...");
+            }
+       });
+    }
+    this.Submit = function() {
+            create(function() { Dialog.Open('login', function(res) {
+                if (res.Success) {
+                    create(function() {});
+                } else {
+ 
+                }
+            });
+        });    
+    };
+    
+    this.Populate = function() {
+        
+    };
+}
+
+function MessageList(id) {
+    this.userId = id;
+    this.messages = ko.observableArray([]);
+    
+    this.getFilters = function() {
+        return [{}];
+    };
+    var self = this;
+    
+    setInterval(function(){
+        self.loadMessages();
+    }, 30000);
+    
+    this.loadMessages = function() {
+        Ajax.Post('/message/getmessages', JSON.stringify({userId : self.userId}),
+        function(result) {
+            if(result) {
+                self.messages(result);
+                Application.GetUser().messages(result);
+            }
+        });
+    };
+    this.ViewMessage = function(vm, ev) {
+                    Application.Transition("message_view", vm._id);
+               };
+    this.Populate = function () {
+        self.loadMessages();
     };
 }
 
@@ -692,6 +778,19 @@ var Application = (function() {
                 url = "/Account/Manage";
                 title = "Preferences and Options!";
                 break;
+            case "viewMessages":
+                model = modelMap[trns] || new MessageList(id);
+                url = "/message/viewmessages";
+                title = "Preferences and Options!";
+                break;
+            case 'sendMessage':
+                model = modelMap[trns] || new Message(id);
+                url = "/message/create";
+                title = 'Send Message!';
+            case 'message_view':
+                model = modelMap[trns] || new MessageView(id);
+                url = '/message/viewmessage';
+                title = 'Message Received!';
             default:
 
             }
