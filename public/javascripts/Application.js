@@ -113,6 +113,10 @@ var Dialog = (function() {
  select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'")
  */
 var JKFilters = (function() {
+    var myOpentip;
+    $(document).ready(function(){  
+        myOpentip = new Opentip("#searchTip");
+    });
     function filterHtmlHelper() {
         this.GetTextInput = function(id, style, placeHolder) {
             return '<input id="' + id + '" style="' + style + '" type="text" placeholder="' + placeHolder + '"/>';
@@ -135,14 +139,14 @@ var JKFilters = (function() {
             });
         };
 
-        this.setToolTip = function() {
-
+        this.setToolTip = function() {  
+            myOpentip.setContent("<p>This is your hub for filtering down the different results and postings within Barter Faire, check here often as it will be constantly updating to assist you with finding exactly what it is you're looking for!.</p>");
         };
         this.setHeader = function() {
-
+            
         };
         this.getHtml = function() {
-
+            return '<p>Choose a state to begin searching for postings in your area!</p>';
         };
         this.populateData = function(callBack) {
 
@@ -159,7 +163,7 @@ var JKFilters = (function() {
         };
 
         this.setToolTip = function() {
-
+            myOpentip.setContent("<p>This is your hub for filtering down results.</p>");
         };
         this.populateData = function(model, callBack) {
             this.LoadCategories(function(res) { 
@@ -622,8 +626,10 @@ var Application = (function() {
                 var model = modelMap[state.data.modelKey];
                 Ajax.UpdateView(state.url, JSON.stringify(state.data.id), function() {
                     model.Populate();
+                    filters.SetFilter(state.data.modelKey, model.Populate);
                     ko.cleanNode(document.getElementById("mainContent"));
                     ko.applyBindings(model, document.getElementById("mainContent"));
+                    ko.cleanNode(document.getElementById("filters"));
                     ko.applyBindings(filters, document.getElementById("filters"));
                     $("#mainContent").fadeIn("slow");
                 });
@@ -691,8 +697,6 @@ var Application = (function() {
             }
             model.id = id;
             modelMap[trns] = model;
-            ko.cleanNode(document.getElementById("filters"));
-            filters.SetFilter(trns, model.Populate);
             History.pushState({
                 modelKey : trns,
                 id : id

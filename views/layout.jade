@@ -30,7 +30,7 @@ html
                       section#contentWrapSection.content-wrapper.main-content.clear-fix
                         div#titleBar.content-wrapper
                             hgroup.title
-                                h1 Barter Faire
+                                h1(style="font-family: 'Open Sans', Arial, sans-serif;font-size: 40px;font-variant: small-caps;") Barter Faire
                                 h2 
                                     p(style="margin-left:24px;font-size: 14px;line-height: 0px;") A way to buy and sell together with your neighbors. 
             section#loginInformation.loginInfoSection 
@@ -54,7 +54,8 @@ html
             div.leftToolBox.component
                 span
                     p#toolBoxHeader(style="font-weight: bold;font-size: 18px;") Find stuff fast!
-                        img#searchTip(src="/Images/help.gif", style="margin-left:5px")
+                        span#searchTip
+                            img(src="/Images/help.gif", style="margin-left:5px")
                 div#filters(style="float:left")
                                         
                 div#tool(style="margin-left:175px;margin-top:90px; cursor: pointer;", onclick="toggleTools()")

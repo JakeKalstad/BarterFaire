@@ -8,5 +8,5 @@ div(data-bind="if: imagePaths().length > 0")
     div.banner
         ul(data-bind="foreach: imagePaths")
             li
-                img(data-bind="attr: { src: $data }", alt="")
+                img(data-bind="attr: { src: $data }", alt="", style="width:400px; height:400px;")
             
