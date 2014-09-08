@@ -584,8 +584,8 @@ function Register(id) {
 
     this.Populate = function() {
         var user = Application.GetUser();
-        listen.userName(user.name());
-        listen.email(user.email());
+        self.userName(user.name());
+        self.email(user.email());
     };
 
     this.Edit = function(vm, evt) {

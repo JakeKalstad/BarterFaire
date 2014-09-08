@@ -69,6 +69,17 @@ html {
 	z-index: 10;
     position: fixed;
 }
+.imgArrows { 
+    margin-left: 50px;
+    background: aliceblue;
+    width: 146px;
+    border-radius: 7px;
+}
+.imgSlideContainer{
+    width: 600px;
+    background: lightblue;
+    border-radius: 0px 15px 15px 0px;
+}
 .loginInfoSection{
 	margin: 5px 35px 0px 0px;	 
     margin-top: -75px;
@@ -91,6 +102,7 @@ body {
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
+    font-variant:small-caps;
 }
 
 .fileUpload {
@@ -199,7 +211,8 @@ h5, h6 {
 }
 .registrationInput {
     display: table-caption; 
-    padding-top:10px;
+    padding-top:10px; 
+    padding-left: 10px;
 }
 .leftToolBox {
     background: #FEFEFA;
@@ -275,11 +288,13 @@ footer {
     padding: 7px;
     border-radius: 0px 0px 30px 30px;
     width: 950px;
+    margin-top: 0;
+    margin-left: 15px;
 }
 .sexyFont {
     font-family: Georgia;
     color: rgba(69,198,150,0.6);
-    font-size: 1.8em;
+    font-size: 1.8em;    
     font-style: italic;
     letter-spacing: 0.04em;
 }

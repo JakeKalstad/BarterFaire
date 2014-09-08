@@ -43,15 +43,22 @@ function Categories(ds) {
     this.ds = ds;
     this.collection = this.db.collection('categories');
 }
+
 function Users(ds) {
     this.db = ds.db;
     this.ds = ds;
     this.collection = this.db.collection('users');
-} 
+}
+
 function States(ds) {
     this.db = ds.db;
     this.ds = ds;
     this.collection = this.db.collection('states');
+    this.GetOne = function(stateId, callBack) {
+        this.ds._Get(this.collection, function(err, resp) {
+            callBack(resp[0]);
+            }, { _id : ObjectId(stateId)});
+    };
 }
 
 function Posts(ds) {
