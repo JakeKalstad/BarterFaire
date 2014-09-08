@@ -71,6 +71,12 @@ var Extensions = (function() {
     };
 })();
 
+var IO = (function() {
+  var socket = io.connect('http://localhost:8000');
+  socket.on('messageCount', function(data) { 
+      Application.GetUser().ReloadMessages();
+  });
+})();
 var Dialog = (function() {
     vex.defaultOptions.className = 'vex-theme-os';
     function loginDialog(onLogin) {
@@ -248,11 +254,22 @@ function User() {
     this.email = ko.observable('');
     this.messages = ko.observableArray([]);
     this.locationDefault = ko.observable(-1);
+    this.messageCount = ko.observable(-1);
     var self = this;
     this.mailImg = ko.computed(function() {
         console.log(self.messages());
         return self.messages().length > 0 ? '/Images/mailRecvd.png' : '/Images/mail.png';
     });
+    
+    this.ReloadMessages = function() {
+         Ajax.Post('/message/getmessages', JSON.stringify({userId : self.id}), function(result) {
+                if(result) {
+                    this.messages(result);
+                    return;
+                }
+                this.messages([]);
+        });
+    };
     this.setUser = function(res) {
         if (!res)
             return;

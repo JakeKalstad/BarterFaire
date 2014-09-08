@@ -8,7 +8,7 @@ var busboy = require('connect-busboy');
 var session = require('express-session');
 var encryption = require('./Encryption');
 var dataService = require('./DataService');
-var mongo = require('mongoskin');
+var mongo = require('mongoskin'); 
 var routes = require('./routes/index');
 var account = require('./routes/account');
 var state = require('./routes/state');
@@ -22,7 +22,13 @@ var message = require('./routes/messages');
 
 var db = mongo.db(process.env.MONGOHQ_URL || "mongodb://localhost:27017/", {native_parser : true});
 var dataService = dataService.GetDataService(db);
+
+var express = require('express');
+var http = require('http');
+var io = require('./IO');
 var app = express();
+var server = http.createServer(app);
+io.initialize(server);
 
 app.use(busboy());
 app.use(bodyParser.urlencoded({extended : false}));
