@@ -540,10 +540,14 @@ function LocationModel(id) {
     };
 }
 function MessageView(id) {
-    this.title = ko.observable('');
-    this.body = ko.observable('');
+    this.Title = ko.observable('');
+    this.Body = ko.observable('');
+    var self = this;
     this.Populate = function() {
-        
+        Ajax.Post('/message/messagedata', JSON.stringify({id : id}), function(res){
+            self.Title(res.Title);
+            self.Body(res.Body);
+        });
     };
     this.back = function() {
         
@@ -606,14 +610,17 @@ function MessageList(id) {
         Ajax.Post('/message/getmessages', JSON.stringify({userId : self.userId}),
         function(result) {
             if(result) {
-                self.messages(result);
                 Application.GetUser().messages(result);
+                self.messages(result);
+                console.log(Application.GetUser().messages());
             }
         });
     };
+    
     this.ViewMessage = function(vm, ev) {
-                    Application.Transition("message_view", vm._id);
-               };
+        Application.Transition("message_view", vm._id);
+    };
+    
     this.Populate = function () {
         self.loadMessages();
     };

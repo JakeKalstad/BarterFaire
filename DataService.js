@@ -41,6 +41,11 @@ function Messages(ds) {
     this.db = ds.db;
     this.ds = ds;
     this.collection = this.db.collection('messages');
+    this.GetMsg = function(id, callBack) {
+          this.ds._Get(this.collection, function(err, resp) {
+            callBack(resp[0]);
+            }, { _id : ObjectId(id)});
+    };
 }
 function Categories(ds) {
     this.db = ds.db;
