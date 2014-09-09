@@ -216,8 +216,7 @@ h5, h6 {
 }
 .leftToolBox {
     background: #FEFEFA;
-    width: 225px;
-    border: 2px dashed #B5DDDB;
+    width: 225px; 
     border-radius: 0px 15px 15px 0px;
     position: fixed;
     height: 400px;

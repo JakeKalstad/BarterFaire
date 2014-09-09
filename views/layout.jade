@@ -25,7 +25,7 @@ html
         script(src='/javascripts/Application.js') 
         
         #content.content-wrapper 
-            header.headerStyle.component
+            header.headerStyle.component(style="background:#F7FFFF")
                 div
                    div
                       img.logo(src="/Images/LOGO.png", onclick="window.location='/'")
@@ -53,21 +53,21 @@ html
                         li
                             button.topMenuButton(onclick="Application.Transition('login')") Log-in 
         div#body
-            div.leftToolBox.component
+            div.leftToolBox.component(style="background:#F7FFFF")
                 span
                     p#toolBoxHeader(style="font-weight: bold;font-size: 18px;") Find stuff fast!
                         span#searchTip
                             img(src="/Images/help.gif", style="margin-left:5px")
                 div#filters(style="float:left")
                                         
-                div#tool(style="margin-left:175px;margin-top:90px; cursor: pointer;", onclick="toggleTools()")
+                div#tool(style="margin-left:175px;margin-top:90px; cursor: pointer;background:#F7FFFF", onclick="toggleTools()")
                     img#leftToolHandle(src="/Images/up.png")                
-            div#mainContent.component(style="display: block;background: #fff;padding: 2px 2px 25px 0px;border-radius: 15px;border: 2px dashed #B5DDDB;")
+            div#mainContent.component(style="display: block;background:#F7FFFF;padding: 2px 2px 25px 0px;border-radius: 15px;")
 script(type='text/javascript').
     var BarterWindow = window;
     $(document).ready(function () {
         if (BarterWindow.File && BarterWindow.FileReader && BarterWindow.FileList && BarterWindow.Blob) {
-            toastr.success("HTML5 Compliance makes you a better person!", "Yuck Feah!");
+            toastr.success("Welcome to Barter Faire");
         } else {
             toastr.error("You are using an older browser that isn't HTML5 compliant :\ Try again when you step it up nerd.", "STEP IT UP");
         }
