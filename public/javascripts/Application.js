@@ -811,10 +811,12 @@ var Application = (function() {
                 model = modelMap[trns] || new Message(id);
                 url = "/message/create";
                 title = 'Send Message!';
+                break;
             case 'message_view':
                 model = modelMap[trns] || new MessageView(id);
                 url = '/message/viewmessage';
                 title = 'Message Received!';
+                break;
             default:
 
             }
