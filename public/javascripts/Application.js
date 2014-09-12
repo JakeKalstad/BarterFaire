@@ -1,5 +1,27 @@
-﻿// Resharper bout to make a scrawny white kid go hulkmode
-// ReSharper disable UnusedParameter
+﻿var URLS = (function() {
+    return {
+        Login : "/Account/Login",
+        Logoff : "/Account/LogOff",
+        NewRegister : "/Account/NewRegister",
+        EditUser : "/Account/Edit",
+        Filter_Category : "/FilterData/Category",
+        Get_Messages : "/message/getmessages",
+        View_Message : '/message/viewmessage',
+        SendMessage : "/message/create",
+        StateIndex : "/State/Index",
+        LocationIndex : "/Location/Index",
+        PostIndex : "/Post/Index",
+        PostDetail : "/Post/PostDetail",
+        PostCreate : "/Post/Create",
+        LoginIndex : "/Account/Index",
+        RegisterIndex : "/Account/Register",
+        ManageAccount : "/Account/Manage",
+        ViewMessages : "/message/viewmessages",
+    };
+})();    
+
+
+ 
 var Ajax = (function() {
     return {
         Post : function(url, data, success) {
@@ -67,13 +89,23 @@ var Extensions = (function() {
             if (string.length <= 0)
                 return "";
             return string.charAt(0).toUpperCase() + string.slice(1);
-        }
+        },
+        bindEnter : function (callBack) {
+               $(document).on("keydown", function (e) {
+                        if (e.which == 13) {
+                            callBack();
+                            e.preventDefault();
+                           $(document).off("keydown");
+                        };
+                    });   
+                }   
     };
 })();
 
 var IO = (function() {
   var socket = io.connect('http://localhost:8000');
-  socket.on('messageCount', function(data) { 
+  socket.on('messageCount', function(data) {
+      alert(data); 
       Application.GetUser().ReloadMessages();
   });
 })();
@@ -90,7 +122,7 @@ var Dialog = (function() {
             })],
             callback : function(data) {
                 if (data) {
-                    Ajax.Post("/Account/Login", JSON.stringify({
+                    Ajax.Post(URLS.Login, JSON.stringify({
                         UserName : data.username,
                         Password : data.password
                     }), function(res) {
@@ -111,13 +143,7 @@ var Dialog = (function() {
         }
     };
 })();
-/*div
- input#searchBox(style="width:160px" type="text" placeholder="Search!")
- label
- Categories
- div.styled-select(style="width:170px")
- select#categoryFilter(data-bind="options: Categories, value: Category, optionsText: 'Title', optionsCaption: 'Category...'")
- */
+
 var JKFilters = (function() {
     var myOpentip;
     $(document).ready(function(){  
@@ -189,7 +215,7 @@ var JKFilters = (function() {
         };
 
         this.LoadCategories = function(callBack) {
-            Ajax.Post("/FilterData/Category", null, function(res) {
+            Ajax.Post(URLS.Filter_Category, null, function(res) {
                 callBack(res);
             });
         };
@@ -262,7 +288,7 @@ function User() {
     });
     
     this.ReloadMessages = function() {
-         Ajax.Post('/message/getmessages', JSON.stringify({userId : self.id}), function(result) {
+         Ajax.Post(URLS.Get_Messages, JSON.stringify({userId : self.id}), function(result) {
                 if(result) {
                     this.messages(result);
                     return;
@@ -286,7 +312,7 @@ function User() {
     this.logOut = function() {
         self.id(-1);
         self.name('');
-        Ajax.Post("/Account/LogOff", null, function(res) {
+        Ajax.Post(URLS.Logoff, null, function(res) {
             Application.Transition("home");
         });
     };
@@ -539,6 +565,7 @@ function LocationModel(id) {
         this.locationId = vm._id;
         Application.Transition("post", vm._id);
     };
+    
     this.grouped = ko.computed(function() {
         return Extensions.Group(self.Locations(), 9);
     }, this);
@@ -556,6 +583,7 @@ function LocationModel(id) {
         self.loadLocations();
     };
 }
+
 function MessageView(id) {
     this.Title = ko.observable('');
     this.Body = ko.observable('');
@@ -624,7 +652,7 @@ function MessageList(id) {
     }, 30000);
     
     this.loadMessages = function() {
-        Ajax.Post('/message/getmessages', JSON.stringify({userId : self.userId}),
+        Ajax.Post(URLS.Get_Messages, JSON.stringify({userId : self.userId}),
         function(result) {
             if(result) {
                 Application.GetUser().messages(result);
@@ -646,10 +674,11 @@ function MessageList(id) {
 function Login() {
     this.userName = ko.observable('');
     this.passWord = ko.observable('');
+    var self = this;
     this.LoginClick = function(vm, evt) {
-        Ajax.Post("/Account/Login", JSON.stringify({
-            UserName : this.userName(),
-            Password : this.passWord()
+        Ajax.Post(URLS.Login, JSON.stringify({
+            UserName : self.userName(),
+            Password : self.passWord()
         }), function(res) {
             if (res.Success) {
                 toastr.success("Welcome back, hope you find something cool.", "You're in!");
@@ -663,6 +692,7 @@ function Login() {
     };
 
     this.Populate = function() {
+        Extensions.bindEnter( self.LoginClick);
     };
 }
 
@@ -674,8 +704,8 @@ function Register(id) {
     this.id = id;
     var self = this;
     this.RegisterClick = function(vm, evt) {
-        Extensions.validatePassword(self.passWord(), this.confirmPassWord(), function() {
-            Ajax.Post("/Account/NewRegister", JSON.stringify({
+        Extensions.validatePassword(self.passWord(), self.confirmPassWord(), function() {
+            Ajax.Post(URLS.NewRegister, JSON.stringify({
                 UserName : self.userName(),
                 Password : self.passWord(),
                 Email : self.email(),
@@ -696,11 +726,12 @@ function Register(id) {
         var user = Application.GetUser();
         self.userName(user.name());
         self.email(user.email());
+        Extensions.bindEnter(self.RegisterClick);
     };
 
     this.Edit = function(vm, evt) {
-        Extensions.validatePassword(self.passWord(), this.confirmPassWord(), function() {
-            Ajax.Post("/Account/Edit", JSON.stringify({
+        Extensions.validatePassword(self.passWord(), self.confirmPassWord(), function() {
+            Ajax.Post(URLS.EditUser, JSON.stringify({
                 id : self.id,
                 email : self.email(),
                 password : self.passWord()
@@ -764,57 +795,57 @@ var Application = (function() {
             switch (trns) {
             case "location":
                 model = modelMap[trns] || new LocationModel(id);
-                url = "/Location/Index";
+                url = URLS.LocationIndex;
                 title = "Choose a Location!";
                 break;
             case "state":
                 model = modelMap[trns] || new StateModel();
-                url = "/State/Index";
+                url = URLS.StateIndex;
                 title = "Choose a State!";
                 break;
             case "post":
                 model = modelMap[trns] || new PostModel(id);
-                url = "/Post/Index";
+                url = URLS.PostIndex;
                 title = "Find a Posting!";
                 break;
             case "post_detail":
                 model = modelMap[trns] || new PostDetail(id);
-                url = "/Post/PostDetail";
+                url = URLS.PostDetail;
                 title = "What a Deal!";
                 break;
             case "createPost":
                 model = modelMap[trns] || new PostCreate();
-                url = "/Post/Create";
+                url = URLS.PostCreate;
                 title = "Very Exciting!";
                 break;
             case "login":
                 model = modelMap[trns] || new Login();
-                url = "/Account/Index";
+                url = URLS.LoginIndex;
                 title = "Welcome Back!";
                 break;
             case "register":
                 model = modelMap[trns] || new Register();
-                url = "/Account/Register";
+                url =  URLS.RegisterIndex;
                 title = "Very Exciting!";
                 break;
             case "manageAccount":
                 model = modelMap[trns] || new Register(id);
-                url = "/Account/Manage";
+                url = URLS.ManageAccount;
                 title = "Preferences and Options!";
                 break;
             case "viewMessages":
                 model = modelMap[trns] || new MessageList(id);
-                url = "/message/viewmessages";
+                url = URLS.ViewMessages;
                 title = "Preferences and Options!";
                 break;
             case 'sendMessage':
                 model = modelMap[trns] || new Message(id);
-                url = "/message/create";
+                url = URLS.SendMessage;
                 title = 'Send Message!';
                 break;
             case 'message_view':
                 model = modelMap[trns] || new MessageView(id);
-                url = '/message/viewmessage';
+                url = URLS.View_Message;
                 title = 'Message Received!';
                 break;
             default:

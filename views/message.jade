@@ -1,5 +1,5 @@
-div(style="list-style: none;margin: 25px;")
-    button(data-bind="click:back") Back
-    button(data-bind="click:reply") Reply
+div.messageBody
+    button.topMenuButton(data-bind="click:back") Back
+    button.topMenuButton(data-bind="click:reply", style="margin-left:5px") Reply
     p(data-bind="text: Title")
     p(data-bind="text: Body")

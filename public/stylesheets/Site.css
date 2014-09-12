@@ -1189,3 +1189,8 @@ tr.pager td {
     transition: opacity .2s;
     color: #fff;
 }
+
+.messageBody {
+    list-style: none;
+    margin: 25px;
+}

@@ -1,4 +1,3 @@
-
 var io = require('./../IO');
 var express = require('express'); 
 var router = express.Router();
@@ -20,9 +19,9 @@ router.post('/newmessage', function(req, res){
     req.dataService.Posts.GetPost(req.body.postId, function(result) {
         req.body.recipientId = result.UserDataId;
         req.dataService.Messages.Insert(req.body, function(msg) {
-            io.Emit('messageCount');
+            io.Emit('messageCount'); 
             res.send({success:true});
-        }); 
+        });
     });
 });
 

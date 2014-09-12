@@ -134,12 +134,13 @@ function DataService(db) {
 	};
 	
 	this._Insert = function(collection, obj, callBack) {
-		collection.insert(obj, function(err, result) {
-            handleError(err);        	
-        	console.log("inserted ");
-        	console.log(result);
+	    var onComplete = function(err, result) {
+            handleError(err);           
+            console.log("inserted ");
+            console.log(result);
             callBack(result);
-  		});
+        };
+		collection.insert(obj, onComplete);
 	};
 	
 	this._Get = function(collection, callBack, filters) {
