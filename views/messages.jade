@@ -1,3 +1,10 @@
 div
-    ul(data-bind="foreach: messages")
-        li(data-bind="text: Title, click: $parent.ViewMessage") 
+    ul.message_list(data-bind="foreach: messages")
+        li.message_item(data-bind="click: $parent.ViewMessage") 
+            span.message_title(data-bind="text: Title")
+            span.message_from(data-bind="text: From")
+            span
+                div.message_viewed(data-bind="if: isViewed")
+                    img(src="/Images/open-iconic-master/png/envelope-open-2x.png")
+                div.message_viewed(data-bind="if: !isViewed")
+                    img(src="/Images/open-iconic-master/png/envelope-closed-2x.png")

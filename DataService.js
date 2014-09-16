@@ -57,6 +57,11 @@ function Users(ds) {
     this.db = ds.db;
     this.ds = ds;
     this.collection = this.db.collection('users');
+     this.GetOne = function(userId, callBack) {
+        this.ds._Get(this.collection, function(err, resp) {
+            callBack(resp[0]);
+            }, { _id : ObjectId(userId)});
+    };
 }
 
 function States(ds) {
@@ -111,6 +116,7 @@ function EntityBlessing(obj) {
     obj.Insert = function(data, callBack) { obj.ds._Insert(obj.collection, data, callBack); };
     obj.Get = function(callBack, filters) { obj.ds._Get(obj.collection, callBack, filters); };
     obj.Remove = function(data, callBack) { obj.ds._Remove(obj.collection, data, callBack); }; 
+    obj.Save = function(data, callBack) { obj.ds._Save(obj.collection, data, callBack); }; 
     obj.Update = function(item, setter, callBack) { obj.ds._Update(obj.collection, item, setter, callBack); };
     return obj;     
 }
@@ -143,6 +149,14 @@ function DataService(db) {
 		collection.insert(obj, onComplete);
 	};
 	
+	this._Save = function(collection, itm, callBack) {
+	   collection.save(itm, function(err, res) {
+	      handleError(err);  
+          console.log("updated " + res);
+          callBack(); 
+	   });
+	};
+	
 	this._Get = function(collection, callBack, filters) {
     	   collection.find(filters).toArray(function (err, items) {
                handleError(err);  
@@ -167,9 +181,9 @@ function DataService(db) {
     };
     
     this._Update = function(collection, item, setter, callBack) {
-        collection.update(item, setter, function(err, coll) {
+        collection.update({ _id : ObjectId(item)}, setter, function(err, coll) {
             handleError(err);
-            callBack(err,coll); 
+            callBack(err, coll); 
             console.log("updated " + coll);
         });
     };

@@ -1,5 +1,7 @@
 div.messageBody
-    button.topMenuButton(data-bind="click:back") Back
-    button.topMenuButton(data-bind="click:reply", style="margin-left:5px") Reply
-    p(data-bind="text: Title")
-    p(data-bind="text: Body")
+    button.topMenuButton.slim_padding(data-bind="click:back") Back
+    button.topMenuButton.slim_padding(data-bind="click:reply", style="margin-left:5px") Reply
+    label Subject
+    p.message_subject(data-bind="text: Title")
+    label Body
+    p.message_body(data-bind="text: Body")

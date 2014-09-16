@@ -7,8 +7,9 @@ router.post('/index', function(req, res) {
 
 router.post('/getallstates', function(req, res) {
 	req.dataService.States.Get(function (err, items) {
-		items.forEach(function(itm) { 
-			itm.Id = itm._id; 
+		items.sort({Name : ''}).forEach(function(itm) { 
+			itm.Id = itm._id;
+			itm.Name;
 			itm.imagePath = '/Images/States/' + itm.Name.trim().replace(/\s+/g, '').replace(' ', '').toLowerCase() + ".png";
 		});
         res.json(items); 

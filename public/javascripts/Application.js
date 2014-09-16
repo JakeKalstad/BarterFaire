@@ -17,6 +17,7 @@
         RegisterIndex : "/Account/Register",
         ManageAccount : "/Account/Manage",
         ViewMessages : "/message/viewmessages",
+        MessageViewed : "/message/message_viewed",
     };
 })();    
 
@@ -104,8 +105,7 @@ var Extensions = (function() {
 
 var IO = (function() {
   var socket = io.connect('http://localhost:8000');
-  socket.on('messageCount', function(data) {
-      alert(data); 
+  socket.on('messageCount', function(data) { 
       Application.GetUser().ReloadMessages();
   });
 })();
@@ -284,16 +284,15 @@ function User() {
     var self = this;
     this.mailImg = ko.computed(function() {
         console.log(self.messages());
-        return self.messages().length > 0 ? '/Images/mailRecvd.png' : '/Images/mail.png';
-    });
-    
+        return self.messages().length > 0 ? "/Images/open-iconic-master/png/envelope-closed-2x.png" : '/Images/open-iconic-master/png/envelope-open-2x.png';
+    }); 
     this.ReloadMessages = function() {
          Ajax.Post(URLS.Get_Messages, JSON.stringify({userId : self.id}), function(result) {
                 if(result) {
-                    this.messages(result);
+                    self.messages(result);
                     return;
                 }
-                this.messages([]);
+                self.messages([]);
         });
     };
     this.setUser = function(res) {
@@ -584,34 +583,52 @@ function LocationModel(id) {
     };
 }
 
-function MessageView(id) {
-    this.Title = ko.observable('');
-    this.Body = ko.observable('');
-    var self = this;
+function MessageView(msg) {
+    this.Title = ko.observable(msg.Title);
+    this.Body = ko.observable(msg.Body);
+    this.Id = msg._id;
+    var self = this; 
+    
+    this.back = function() {
+        Application.GetUser().viewMessages();
+    };
+    
+    this.reply = function() {
+        Application.Transition('sendMessage', msg);
+    };
     this.Populate = function() {
-        Ajax.Post('/message/messagedata', JSON.stringify({id : id}), function(res){
-            self.Title(res.Title);
-            self.Body(res.Body);
+        Ajax.Post(URLS.MessageViewed, JSON.stringify(msg), function(err, ret) {
+            msg = ret;
         });
     };
-    this.back = function() {
-        
-    };
-    this.reply = function() {
-        
-    };
 }
-function Message(id) {
-    this.Title = ko.observable('');
-    this.Body = ko.observable('');
-    this.id = id;
-    var self = this; 
+function Message(data) { 
+    if(!data.Title)
+    {
+        this.Title = ko.observable('');
+        this.Body = ko.observable('');
+        this.postId = data;
+    }
+    else {
+        this.Title = ko.observable("Reply:" + data.Title);
+        this.Body = ko.observable("\n\n\"" + data.Body + "\"");
+        this.id = data.Id;
+        this.senderId = data.senderId;
+    }
+    var self = this;
     function create(onFail) {
         if (!Application.GetUser().isOnline()) {
             onFail();
             return;
         }
-        Ajax.Post('/message/newmessage',  JSON.stringify({ Title : self.Title(), Body : self.Body(), postId : self.id, active : true, userId : Application.GetUser().id }),
+        Ajax.Post('/message/newmessage',  JSON.stringify({ 
+                Title : self.Title(), 
+                Body : self.Body(), 
+                postId : self.postId, 
+                active : true, 
+                userId : Application.GetUser().id,
+                senderId : self.senderId
+            }),
         function(res) {
             if(res.success) {
                 toastr.success("Message sent! Please make sure to watch your inbox for the sellers reply!", "Success!");
@@ -663,7 +680,7 @@ function MessageList(id) {
     };
     
     this.ViewMessage = function(vm, ev) {
-        Application.Transition("message_view", vm._id);
+        Application.Transition("message_view", vm);
     };
     
     this.Populate = function () {
@@ -794,57 +811,57 @@ var Application = (function() {
                 trns = "state";
             switch (trns) {
             case "location":
-                model = modelMap[trns] || new LocationModel(id);
+                model =  new LocationModel(id);
                 url = URLS.LocationIndex;
                 title = "Choose a Location!";
                 break;
             case "state":
-                model = modelMap[trns] || new StateModel();
+                model = new StateModel();
                 url = URLS.StateIndex;
                 title = "Choose a State!";
                 break;
             case "post":
-                model = modelMap[trns] || new PostModel(id);
+                model =new PostModel(id);
                 url = URLS.PostIndex;
                 title = "Find a Posting!";
                 break;
             case "post_detail":
-                model = modelMap[trns] || new PostDetail(id);
+                model = new PostDetail(id);
                 url = URLS.PostDetail;
                 title = "What a Deal!";
                 break;
             case "createPost":
-                model = modelMap[trns] || new PostCreate();
+                model = new PostCreate();
                 url = URLS.PostCreate;
                 title = "Very Exciting!";
                 break;
             case "login":
-                model = modelMap[trns] || new Login();
+                model = new Login();
                 url = URLS.LoginIndex;
                 title = "Welcome Back!";
                 break;
             case "register":
-                model = modelMap[trns] || new Register();
+                model = new Register();
                 url =  URLS.RegisterIndex;
                 title = "Very Exciting!";
                 break;
             case "manageAccount":
-                model = modelMap[trns] || new Register(id);
+                model = new Register(id);
                 url = URLS.ManageAccount;
                 title = "Preferences and Options!";
                 break;
             case "viewMessages":
-                model = modelMap[trns] || new MessageList(id);
+                model = new MessageList(id);
                 url = URLS.ViewMessages;
                 title = "Preferences and Options!";
                 break;
             case 'sendMessage':
-                model = modelMap[trns] || new Message(id);
+                model = new Message(id);
                 url = URLS.SendMessage;
                 title = 'Send Message!';
                 break;
             case 'message_view':
-                model = modelMap[trns] || new MessageView(id);
+                model = new MessageView(id);
                 url = URLS.View_Message;
                 title = 'Message Received!';
                 break;

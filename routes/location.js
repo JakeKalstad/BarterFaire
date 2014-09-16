@@ -11,22 +11,18 @@ function setLocationName(location, indx) {
         location.Name = location.Name.slice(0, countyIndx);
     }
 }
-
-function stripSuffix(location) {
-    setLocationName(location, "County");
-    setLocationName(location, "Burough");
-    setLocationName(location, "Parish"); 
-    console.log(location.Name + " | " + location.Name.indexOf("County")); 
-}
-
+ 
 router.post('/getlocationbystate', function(req,res) { 
     console.log(req.body);
     var stateName = '';
     req.dataService.States.GetOne(req.body.id, function(state) {
         req.dataService.Locations.GetLocations(req.body, function(locations) {
-            locations.sort(function(l) { return -l.Count;});
-            
-            locations.forEach(stripSuffix);
+            locations.sort(function(l) { return -l.Count;}); 
+            locations.forEach(function(l) {
+                setLocationName(l, "County");
+                setLocationName(l, "Burough");
+                setLocationName(l, "Parish");  
+            });
             
             if(state)
                 res.send({ state:state.Name, locations : locations});

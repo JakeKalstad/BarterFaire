@@ -1,7 +1,6 @@
 var io = require('./../IO');
 var express = require('express'); 
 var router = express.Router();
- 
 
 router.post('/viewmessages', function(req,res) { 
     res.render('messages');
@@ -15,29 +14,45 @@ router.post('/viewmessage', function(req,res) {
     res.render('message');
 });
 
-router.post('/newmessage', function(req, res){
-    req.dataService.Posts.GetPost(req.body.postId, function(result) {
-        req.body.recipientId = result.UserDataId;
+router.post('/newmessage', function(req, res) {
+    var insert = function() {
         req.dataService.Messages.Insert(req.body, function(msg) {
             io.Emit('messageCount'); 
             res.send({success:true});
         });
-    });
+    };
+    console.log('WHATS GOING ON FFS');
+    console.log(req.body);
+    req.body.recipientId = req.body.senderId;
+    req.body.senderId = req.session.Id;
+    req.body.From = req.session.UserName; 
+    if(req.body.recipientId) { 
+        insert();
+        return;
+    } else {
+        req.dataService.Posts.GetPost(req.body.postId, function(result) {
+            req.body.recipientId = result.UserDataId;
+            insert();
+        });
+    }
 });
 
-router.post('/getmessages', function(req, res){
+router.post('/getmessages', function(req, res){ 
     req.dataService.Messages.Get(function(err, messages) {
-        messages.forEach(function(msg) {msg.Title = msg.Title || 'n/a';});
-        res.send(messages); 
-    }, {recipientId : req.body.userId});
+        count = messages.length;
+        messages.forEach(function(msg) { 
+            msg.Title = msg.Title || 'n/a';
+            msg.isViewed = msg.isViewed || false; 
+        });
+        res.send(messages);
+    }, {recipientId : req.session.Id});
 });
 
-router.post('/messagedata', function(req,res) { 
-    var messageId = req.body.id;
-    req.dataService.Messages.GetMsg(messageId, function(message) { 
-        res.send(message); 
-    });
-        
+router.post('/message_viewed', function(req,res) {   
+    req.body._id = req.body._id || req.body.id;
+    req.dataService.Messages.Update(req.body._id, { $set: { isViewed : true }}, function(er, ret){
+        res.send(ret);
+    }); 
 });
 
 module.exports = router;
