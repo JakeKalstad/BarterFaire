@@ -6,11 +6,11 @@ lib-cov
 *.out
 *.pid
 *.gz
-
-public\Images\open-iconic-master\*
+ 
 data
 pids
 logs
 results
 build
 node_modules
+public/Images/open-iconic-master
