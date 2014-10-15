@@ -1,0 +1,14 @@
+h3.postTitle(data-bind="text: Title")
+div(style="margin: 15px;background: lightblue;border-radius: 5px; padding: 25px;")
+    button.JKButton(data-bind="click:sendMessage") Contact Seller!
+    p(style="background: white;width: 980px;padding: 5px;border-radius: 15px;", data-bind="text:Body")
+    div.imgSlideContainer(data-bind="if: imagePaths().length > 0") 
+        div.imgArrows
+            a.imgTabBtn.unslider-arrow.prev(href="#")
+                img(src='../Images/slider-arrow-left.png')
+            a.imgTabBtn.unslider-arrow.next(href="#", style="padding-left:25px")
+                img(src='../Images/slider-arrow-right.png')
+        div.banner
+            ul(data-bind="foreach: imagePaths")
+                li
+                    img(data-bind="attr: { src: $data }", alt="", style="width:400px; height:400px;")

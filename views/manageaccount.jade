@@ -1,0 +1,11 @@
+div(style="padding-left:10px; padding-top:10px")
+    p You're logged in as 
+        strong(data-bind="text:userName") . 
+    label Email
+    input(type="text", data-bind="value:email")
+    label Password
+    input.password(type="password", data-bind="value: passWord")
+    label Confirm Password
+    input.password(type="password", data-bind="value: confirmPassWord")
+    div
+        button.JKButton(data-bind="click: Edit") Submit Edits!
