@@ -11,7 +11,8 @@ lib-cov
 *.pid
 *.gz
  
-data/
+data/*
+data/db/*
 pids
 logs
 results
