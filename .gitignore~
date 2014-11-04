@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 /update/*
-data/*
+/data/*
 =======
 lib-cov
 *.seed
@@ -10,12 +9,12 @@ lib-cov
 *.out
 *.pid
 *.gz
- 
-data/
+data
+data/*
+data/db/*
 pids
 logs
 results
 build
 node_modules
 public/Images/open-iconic-master
->>>>>>> 259fe453a48f4ef67f093f5b278ce776c4fb478d
