@@ -16,10 +16,13 @@ function Locations(ds) {
     this.collection = this.db.collection('locations');
     var self = this;
     this.GetLocations = function (stateReq, callBack) {  
-        console.log('Get Locations');
-       var filter = getFilters(stateReq.filters);
+        console.log('Get Locations'); 
+       var filter = getFilters(stateReq.filters); 
         this.ds._Get(this.collection, function(err, locations) {
             console.log('Retrieved Locations');
+            locations.forEach(function(loc){
+                console.log(loc);
+            });
             self.ds.Posts.Get(function(err, posts) {  
                 console.log('Retrieved Posts');              
                 var countHash = new Object();
@@ -93,10 +96,10 @@ function Posts(ds) {
         var filters = getFilters(filterParams);
         console.log('***********');
         console.log(filters);
-        filters.LocationId = id.toString();
+        filters.LocationId = ObjectId(id.toString());
         console.log(filters);
         console.log('***********');
-        self.ds.Categories.Get(function(err, cat){
+        self.ds.Categories.Get(function(err, cat) {
             var catHash = new Object();
             cat.forEach(function(cat) {
                 catHash[cat._id] = cat.Name;
@@ -112,6 +115,7 @@ function Posts(ds) {
 }
 
 function EntityBlessing(obj) {
+    obj.Select = function(filter, selector, callBack) { obj.ds._Select(obj.collection, filter, selector, callBack); };
     obj.Index = function(indx, callBack) { obj.ds._Index(obj.collection, indx, callBack); };
     obj.Insert = function(data, callBack) { obj.ds._Insert(obj.collection, data, callBack); };
     obj.Get = function(callBack, filters) { obj.ds._Get(obj.collection, callBack, filters); };
@@ -137,6 +141,10 @@ function DataService(db) {
 	
 	this._Index = function(collection, indx, callBack) {
 	       //collection.createIndex(indx, {w:1}, function(err, indexName) {callBack();});
+	};
+	
+	this._Select = function (collection, filter, selector, callBack){
+	   return collection.find(filter, selector).toArray(callBack);  
 	};
 	
 	this._Insert = function(collection, obj, callBack) {

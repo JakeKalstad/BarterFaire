@@ -1,5 +1,5 @@
 h2 Create Posting  
-form#dropzone.dropzone(style="min-height: 150px;margin: 0;top: 0;left: 0;width:99%;") 
+form#dropzone.dropzone
 div.formSpace
     ul
         li
@@ -15,5 +15,5 @@ div.formSpace
             input(type="text", data-bind="value:Title")
         li
             label Body
-            textarea(data-bind="value: Body", style="height:150px; width:99%;")
+            textarea(data-bind="value: Body")
     input.JKButton(type="button", data-bind="click: Submit", value="Create Posting") 

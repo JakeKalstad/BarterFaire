@@ -20,9 +20,7 @@ router.post('/newmessage', function(req, res) {
             io.Emit('messageCount'); 
             res.send({success:true});
         });
-    };
-    console.log('WHATS GOING ON FFS');
-    console.log(req.body);
+    }; 
     req.body.recipientId = req.body.senderId;
     req.body.senderId = req.session.Id;
     req.body.From = req.session.UserName; 
@@ -50,8 +48,8 @@ router.post('/getmessages', function(req, res){
 
 router.post('/message_viewed', function(req,res) {   
     req.body._id = req.body._id || req.body.id;
-    req.dataService.Messages.Update(req.body._id, { $set: { isViewed : true }}, function(er, ret){
-        res.send(ret);
+    req.dataService.Messages.Update(req.body._id, { $set: { isViewed : true }}, function(er, ret) {
+        res.send({ success: ret});
     }); 
 });
 

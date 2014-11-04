@@ -33,7 +33,9 @@ var Ajax = (function() {
                 cache : false,
                 contentType : 'application/json',
                 success : success,
-                error : function(res) {
+                error : function(res, ret) {
+                    console.log(res);
+                    console.log(ret);
                     toastr.error("Something went wrong, please try again.");
                 }
             });
@@ -587,6 +589,7 @@ function MessageView(msg) {
     this.Title = ko.observable(msg.Title);
     this.Body = ko.observable(msg.Body);
     this.Id = msg._id;
+    this.msg = msg;
     var self = this; 
     
     this.back = function() {
@@ -594,11 +597,11 @@ function MessageView(msg) {
     };
     
     this.reply = function() {
-        Application.Transition('sendMessage', msg);
+        Application.Transition('sendMessage', self.msg);
     };
     this.Populate = function() {
-        Ajax.Post(URLS.MessageViewed, JSON.stringify(msg), function(err, ret) {
-            msg = ret;
+        Ajax.Post(URLS.MessageViewed, JSON.stringify(self.msg), function(err, ret) {
+             
         });
     };
 }

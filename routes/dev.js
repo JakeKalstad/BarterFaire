@@ -1,6 +1,7 @@
 var express = require('express');
 var http = require('http');
 var router = express.Router();
+var ObjectId = require('mongodb').ObjectID;
 
 var states = [
     {
@@ -348,6 +349,38 @@ function populateLocations(states, req, res) {
         req.end();
     });     
 }
+
+router.post('/seed_posts', function(req, res) {
+    var posts = [];
+    var categories = [];
+    var locations = [];
+    req.dataService.Categories.Select({}, {'_id': true}, function(err, results) {
+        categories = results;                                                       // Oregon state ID on my box, sorry for the hax.
+        req.dataService.Locations.Select({stateId : ObjectId("540be74b571ba917298fc729")}, {'_id': true}, function(err, results) {
+            locations = results;
+            var categoryMax = categories.length; 
+            var locationsMax = locations.length;
+            var catIndx = 0;
+            var locIndx = 0;
+            for(var i=0; i<50000; i++) {
+                if(++catIndx == categoryMax)
+                    catIndx = 0;
+                if(++locIndx == locationsMax)
+                    locIndx = 0;
+                posts.push({
+                    Title : "Test Post #" + i,
+                    Body : "###Test Post Body ###" + i,
+                    LocationId : locations[locIndx]._id,
+                    categoryId : categories[catIndx]._id,
+                    imageFiles : ['down.png', 'bullet.png', 'open-iconic-master/account-login.png']
+                });
+            }
+            req.dataService.Posts.Insert(posts, function(result) {
+                res.send({success:true});       
+            });
+        });
+    });  
+});
 
 router.post('/seed', function(req,res) { 
     popCount++; 
