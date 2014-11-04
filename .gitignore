@@ -1,1 +1,20 @@
+<<<<<<< HEAD
 /update/*
+=======
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+ 
+data
+pids
+logs
+results
+build
+node_modules
+public/Images/open-iconic-master
+>>>>>>> 259fe453a48f4ef67f093f5b278ce776c4fb478d
