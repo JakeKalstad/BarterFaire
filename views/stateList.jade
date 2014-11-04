@@ -1,7 +1,9 @@
 h2.listHeader Choose your state
-table
-    tr(data-bind="foreach: grouped")
-        td.stateData(data-bind="foreach: $data")
-            a.bfButton(data-bind="click: $parents[1].LoadLocations")
-                img(data-bind="attr: { src: imagePath }")
-                div(data-bind="text: Name")
+div.states
+    div.line(data-bind="foreach: grouped")
+        div.unit.size1of1
+            div.line(data-bind="foreach: $data")
+                div.unit.size1of5
+                    a.bfButton(data-bind="click: $parents[1].LoadLocations")
+                        img(data-bind="attr: { src: imagePath }")
+                        div(data-bind="text: Name")

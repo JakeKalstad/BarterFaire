@@ -1,7 +1,15 @@
-div.messageBody
-    button.topMenuButton.slim_padding(data-bind="click:back") Back
-    button.topMenuButton.slim_padding(data-bind="click:reply", style="margin-left:10px;margin-bottom: 25px;") Reply
-    label Subject
-    p.message_subject(data-bind="text: Title")
-    label Body
-    p.message_body(data-bind="text: Body")
+div.line
+    div.unit.size1of2
+        button.topMenuButton.slim_padding(data-bind="click:back") Back
+    div.unit.size1of2
+        button.topMenuButton.slim_padding(data-bind="click:reply") Reply
+    div.line
+        div.unit.size1of1
+            label Subject
+    div.line
+        div.unit.size1of1
+            p.message_subject(data-bind="text: Title")
+    div.line
+        div.unit.size1of1
+            label Body
+            p.message_body(data-bind="text: Body")

@@ -1,10 +1,14 @@
-div.registrationInput 
+div.line
     span User Name
-    input(type="text", data-bind="value: userName") 
+    div
+        input(type="text", data-bind="value: userName") 
     span Email
-    input(type="text", data-bind="value: email")   
+    div
+        input(type="text", data-bind="value: email")   
     span Password
-    input.password(type="password", data-bind="value: passWord") 
+    div
+        input.password(type="password", data-bind="value: passWord") 
     span Confirm Password
-    input.password(type="password", data-bind="value: confirmPassWord") 
-    button(data-bind="click: RegisterClick") Register!
+    div
+        input.password(type="password", data-bind="value: confirmPassWord") 
+button(data-bind="click: RegisterClick") Register!

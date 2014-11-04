@@ -1,19 +1,25 @@
-h2 Create Posting  
-form#dropzone.dropzone
-div.formSpace
-    ul
-        li
-            label Locations
-            div.styled-select
-                select(data-bind="options: Locations, value: Location, optionsText: 'Name', optionsCaption: 'Choose a Location...'")
-        li
-            label Categories
-            div.styled-select
-                select(data-bind="options: Categories, value: Category, optionsText: 'Name', optionsCaption: 'Choose a Category...'")
-        li
-            label Title
-            input(type="text", data-bind="value:Title")
-        li
-            label Body
-            textarea(data-bind="value: Body")
-    input.JKButton(type="button", data-bind="click: Submit", value="Create Posting") 
+h2 Create Posting
+div.line
+    div.unit.size1of1
+        form#dropzone.dropzone
+div.line
+    div.unit.size1of1
+        ul
+            li
+                label Locations
+                div.styled-select
+                    select(data-bind="options: Locations, value: Location, optionsText: 'Name', optionsCaption: 'Choose a Location...'")
+            li
+                label Categories
+                div.styled-select
+                    select(data-bind="options: Categories, value: Category, optionsText: 'Name', optionsCaption: 'Choose a Category...'")
+            li
+                label Title
+                div.txtInput
+                    input(type="text", data-bind="value:Title")
+            li
+                label Body
+                div.txtInput
+                    textarea(data-bind="value: Body")
+div.line
+    input(type="button", data-bind="click: Submit", value="Create Posting") 

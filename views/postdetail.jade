@@ -1,15 +1,21 @@
 h3.postTitle(data-bind="text: Title")
-div
-    button.JKButton(data-bind="click:sendMessage") Contact Seller!
-    p(data-bind="text:Body")
+div.line
+    div.unit.size1of1
+        button(data-bind="click:sendMessage") Contact Seller!
+    div.line
+        div.unit.size1of1
+            p(data-bind="text:Body")
     div.imgSlideContainer(data-bind="if: imagePaths().length > 0") 
-        div.imgArrows
-            a.imgTabBtn.unslider-arrow.prev(href="#")
-                img(src='../Images/slider-arrow-left.png')
-
-            a.imgTabBtn.unslider-arrow.next(href="#")
-            img(src='../Images/slider-arrow-right.png')
-        div.banner
-            ul(data-bind="foreach: imagePaths")
-                li
-                    img(data-bind="attr: { src: $data }", alt="")
+        div.line
+            div.unit.size1of2
+                a.imgTabBtn.unslider-arrow.prev(href="#")
+                    img(src='../Images/slider-arrow-left.png')
+            div.unit.size1of2
+                a.imgTabBtn.unslider-arrow.next(href="#")
+                img(src='../Images/slider-arrow-right.png')
+            div.line
+                div.size1of1
+                    div.banner
+                        ul(data-bind="foreach: imagePaths")
+                            li
+                                img(data-bind="attr: { src: $data }", alt="")

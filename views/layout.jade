@@ -9,47 +9,46 @@ html
         link(rel='stylesheet', href='/stylesheets/opentip.css')
         link(rel='stylesheet', href='/stylesheets/vex-theme-os.css')
     body
-        block content  
-        #content.content-wrapper 
-            header.headerStyle.component
-                div
-                   div
-                      img.logo(src="/Images/LOGO.png", onclick="window.location='/'")
-                      section#contentWrapSection.content-wrapper.main-content.clear-fix
-                        div#titleBar.content-wrapper
-                            hgroup.title
-                                h1 Barter Faire
-                                h2 
-                                    p A way to buy and sell together with your neighbors. 
-            section#loginInformation.loginInfoSection 
-                div(data-bind="if: name")
-                    span Welcome back, 
-                        span(data-bind="text: name")
-                    ul
-                        li 
-                            img(data-bind="click: viewMessages, attr: { src: mailImg }")
-                        li
-                            button.topMenuButton(data-bind="click: manageAccount") Manage Account                            
-                        li
-                            button.topMenuButton(data-bind="click: logOut") Log Off                         
-                div(data-bind="ifnot: name")
-                    ul
-                        li
-                            button.topMenuButton(onclick="Application.Transition('register')") Register 
-                        li
-                            button.topMenuButton(onclick="Application.Transition('login')") Log-in 
-        div#body
-            div.leftToolBox.component
-                span
-                    p#toolBoxHeader Find stuff fast!
-                        span#searchTip
+        block content
+        div.page
+        div.head
+            div.line.title_bar
+                div.unit.size1of2.logo_img 
+                div.unit.size1of3.header_title
+                    h1 Barter Faire
+                    h4 A way to buy and sell together with your neighbors. 
+                div.lastUnit.size1of4.user_controls(align="right")
+                    div(data-bind="if: name")
+                        div.line
+                            div.unit.size1of1
+                                span Welcome back, 
+                                    span(data-bind="text: name")
+                                img(data-bind="click: viewMessages, attr: { src: mailImg }")								
+                        div.line
+                            div.unit.size1of1
+                                button.topMenuButton(data-bind="click: manageAccount") Manage Account    
+                                button.topMenuButton(data-bind="click: logOut") Log Off                         
+                    div(data-bind="ifnot: name")
+                        div.line
+                            div.unit.size1of1
+                                button.topMenuButton(onclick="Application.Register()") Register 
+                                button.topMenuButton(onclick="Application.Login()") Log-in 
+        div.body 
+            div.leftCol
+                div.line
+                    div.unit.size1of1
+                        p#toolBoxHeader Find stuff fast!
+                            span#searchTip
                             img(src="/Images/help.gif")
-                div#filters
-                                        
-                div#tool(onclick="toggleTools()")
-                    img#leftToolHandle(src="/Images/up.png")                
-            div#mainContent.component
-            
+                div.line
+                    div.unit.size1of2
+                        div#filters
+                    div.unit.size1of5
+                        div#tool(onclick="toggleTools()")
+                            img#leftToolHandle(src="/Images/up.png")       
+            div.main  
+                div#mainContent.component 
+                
         script(src='/javascripts/modernizr-2.6.2.js')
         script(src='/javascripts/jquery-1.8.2.min.js')
         script(src="//cdn.socket.io/socket.io-1.0.0.js")
@@ -63,14 +62,14 @@ html
         script(src='/javascripts/dropzone.js')
         script(src='/javascripts/opentip-native.js') 
         script(src='/javascripts/Application.js') 
-script(type='text/javascript').
-    var BarterWindow = window;
-    $(document).ready(function () {
-        if (BarterWindow.File && BarterWindow.FileReader && BarterWindow.FileList && BarterWindow.Blob) {
-            toastr.success("Welcome to Barter Faire");
-        } else {
-            toastr.error("You are using an older browser that isn't HTML5 compliant :\ Try again when you step it up nerd.", "STEP IT UP");
-        }
-        Application.Initialize(BarterWindow);
-        Application.Transition("home"); 
-    });
+        script(type='text/javascript').
+            var BarterWindow = window;
+            $(document).ready(function () {
+                if (BarterWindow.File && BarterWindow.FileReader && BarterWindow.FileList && BarterWindow.Blob) {
+                    toastr.success("Welcome to Barter Faire");
+                } else {
+                    toastr.error("You are using an older browser that isn't HTML5 compliant :\ Try again when you step it up nerd.", "STEP IT UP");
+                }
+                Application.Initialize(BarterWindow);
+                Application.Transition("home"); 
+            });

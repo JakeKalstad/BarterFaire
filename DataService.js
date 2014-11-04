@@ -16,28 +16,10 @@ function Locations(ds) {
     this.collection = this.db.collection('locations');
     var self = this;
     this.GetLocations = function (stateReq, callBack) {  
-        console.log('Get Locations'); 
        var filter = getFilters(stateReq.filters); 
         this.ds._Get(this.collection, function(err, locations) {
-            console.log('Retrieved Locations');
-            locations.forEach(function(loc){
-                console.log(loc);
-            });
-            self.ds.Posts.Get(function(err, posts) {  
-                console.log('Retrieved Posts');              
-                var countHash = new Object();
-                posts.forEach(function(post) { 
-                    if(countHash[post.LocationId]){
-                        countHash[post.LocationId]++; 
-                    }
-                    else countHash[post.LocationId] = 1;
-                });
-                locations.forEach(function(loc){
-                   loc.Count = countHash[loc._id] || 0; 
-                });
-                callBack(locations); 
-            }, filter);
-        }, {stateId:ObjectId(stateReq.id)});
+                callBack(locations);
+            }, {stateId:ObjectId(stateReq.id)});
     };
 }
 function Messages(ds) {
@@ -96,7 +78,7 @@ function Posts(ds) {
         var filters = getFilters(filterParams);
         console.log('***********');
         console.log(filters);
-        filters.LocationId = ObjectId(id.toString());
+        filters.LocationId = id.toString();
         console.log(filters);
         console.log('***********');
         self.ds.Categories.Get(function(err, cat) {
@@ -106,6 +88,7 @@ function Posts(ds) {
             });
             self.ds._Get(self.collection, function(err, resp) {
                 resp.forEach(function(post) {
+                    console.log('found post');
                    post.Category =  catHash[post.categoryId];
                 });
                 callBack(resp);
