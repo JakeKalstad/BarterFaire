@@ -2,30 +2,53 @@
 .line:after{content: ".";display: block;height: 0;clear: both;visibility: hidden;}
 .lastUnit:after{content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";visibility:hidden; clear:both;height:0 !important;display:block;line-height:0;}
 body {
-    margin:0px;
     font-family: fantasy;
     color:gray;
+       margin:0;
+   padding:0;
+   height:100%;
 }
-ul {
+ul, ol {
     list-style: none;
 }
 button { 
-background-color: #eeeeee;
-background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, #cccccc));
-background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);
-background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
-background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);
-background-image: -o-linear-gradient(top, #eeeeee, #cccccc);
-background-image: linear-gradient(top, #eeeeee, #cccccc);
-border: 1px solid #ccc;
-border-bottom: 1px solid #bbb;
-border-radius: 3px;
-color: #333;
-font: bold 11px/1 "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
-padding: 8px 0;
-text-align: center;
-text-shadow: 0 1px 0 #eee;
-width: 150px;
+    background-color: #eeeeee;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, #cccccc));
+    background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);
+    background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
+    background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);
+    background-image: -o-linear-gradient(top, #eeeeee, #cccccc);
+    background-image: linear-gradient(top, #eeeeee, #cccccc);
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #bbb;
+    border-radius: 3px;
+    color: #333;
+    font: bold 11px/1 "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+    padding: 8px 0;
+    text-align: center;
+    text-shadow: 0 1px 0 #eee;
+    width: 150px;
+}
+ button:hover {
+    background-color: #dddddd;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dddddd), color-stop(100%, #bbbbbb));
+    background-image: -webkit-linear-gradient(top, #dddddd, #bbbbbb);
+    background-image: -moz-linear-gradient(top, #dddddd, #bbbbbb);
+    background-image: -ms-linear-gradient(top, #dddddd, #bbbbbb);
+    background-image: -o-linear-gradient(top, #dddddd, #bbbbbb);
+    background-image: linear-gradient(top, #dddddd, #bbbbbb);
+    border: 1px solid #bbb;
+    border-bottom: 1px solid #999;
+    cursor: pointer;
+    text-shadow: 0 1px 0 #ddd; }
+  button:active {
+    border: 1px solid #aaa;
+    border-bottom: 1px solid #888;
+    -webkit-box-shadow: inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee;
+    box-shadow: inset 0 0 5px 2px #aaaaaa, 0 1px 0 0 #eeeeee; }
+.state_button {
+    height: 55px;
+    margin:5px;
 }
 .line{*zoom:1;}
 .unit{float:left;}
@@ -40,12 +63,35 @@ width: 150px;
 .size3of5{width:60%;}
 .size4of5{width:80%;}
 .lastUnit {display: table-cell; *display:block;*zoom:1;float:none;_position:relative; _left:-3px; _margin-right: -3px;width:auto;}
-.main{overflow: hidden;_overflow:visible;_zoom:1;}
+.main{
+    overflow: hidden;_overflow:visible;_zoom:1;
+    padding-left:25px;
+    
+}
+.dropzone {
+    height:150px;
+}
+.page {
+     min-height:100%;
+   position:relative;
+}
+#dropzone {
+ min-height:150px;   
+}
+
+.post_info {
+    margin-top:35px;
+    padding-left: 0px;
+}
+.body {
+    padding-bottom:60px;
+}
 .leftCol{
     float: left;
     width: 250px;
-    border: 1px solid black;
+    border-right: 1px solid grey;
     min-height: 450px;
+    background:#EFFBFB;
 }
 .rightCol{float:right; width: 300px;_margin-left:-3px;}
 .gradient_background {
@@ -58,6 +104,18 @@ width: 150px;
     background: linear-gradient(to bottom, rgba(135,224,253,1) 0%,rgba(83,203,241,1) 40%,rgba(5,171,224,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0',GradientType=0 );
 }
+.gradient_toolbox {
+   background: rgb(249,252,247); /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y5ZmNmNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNWY5ZjAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, rgba(249,252,247,1) 0%, rgba(245,249,240,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(249,252,247,1)), color-stop(100%,rgba(245,249,240,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(249,252,247,1) 0%,rgba(245,249,240,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9fcf7', endColorstr='#f5f9f0',GradientType=0 ); /* IE6-8 */
+}
 .title_bar{ 
 }
 h1 {
@@ -67,17 +125,24 @@ h1 {
     
 }
 
+.location {
+    margin:5px
+}
+.state_tile{   
+}
+
 .state {
     height: 100%;
-    cursor: pointer;
-    width: 100%;
-    max-height: 125px;
-    max-width: 125px;
+    cursor: pointer; 
+    max-height: 25px;
+    max-width: 25px;
 }
 .footer {
-    color:aliceblue;
-    width: 100%;
-    float: left;
+   position:fixed;
+   bottom:0;
+   width:100%;
+   height:60px;   /* Height of the footer */
+   background:#6cf;
 }
 .header_title { 
     margin-left: 15px;

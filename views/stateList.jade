@@ -3,7 +3,7 @@ div.states
     div.line(data-bind="foreach: grouped")
         div.unit.size1of1
             div.line(data-bind="foreach: $data")
-                div.unit.size1of5
-                    a.bfButton(data-bind="click: $parents[1].LoadLocations")
+                div.unit.size1of5.state_tile
+                    button.state_button(data-bind="click: $parents[1].LoadLocations")
                         img.state(data-bind="attr: { src: imagePath }")
                         div(data-bind="text: Name")

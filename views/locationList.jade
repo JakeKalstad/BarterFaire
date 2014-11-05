@@ -1,10 +1,10 @@
-button.topMenuButton(onclick="Application.Transition('createPost')") Create a posting here in 
+button(onclick="Application.Transition('createPost')") Create a posting here in 
     span(data-bind="text:state")
 h2.listHeader Select A County!
 div.county_list
     div.line(data-bind="foreach: grouped")
         div.unit.size1of4
             ol(data-bind="foreach: $data")
-                li
+                li.location
                     button.locationButton(data-bind="click: $parents[1].LoadPosts")
                         span.locationName(data-bind="text: Name")
