@@ -924,7 +924,7 @@ var Application = (function() {
 			History.pushState({
 				modelKey : trns,
 				id : id
-			}, title, "#"+url);
+			}, title, url);
 		}
 	};
 })();

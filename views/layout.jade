@@ -12,7 +12,7 @@ html
         block content
         div.page
         div.head
-            div.line.title_bar
+            div.line.title_bar.gradient_background
                 div.unit.size1of2.logo_img 
                 div.unit.size1of3.header_title
                     h1 Barter Faire
@@ -42,13 +42,17 @@ html
                             img(src="/Images/help.gif")
                 div.line
                     div.unit.size1of2
-                        div#filters
-                    div.unit.size1of5
-                        div#tool(onclick="toggleTools()")
-                            img#leftToolHandle(src="/Images/up.png")       
+                        div#filters      
             div.main  
                 div#mainContent.component 
-                
+    div.footer.gradient_background
+        div
+            div.unit.size1of3
+                h4 bing bong bang!
+            div.unit.size1of3
+                h4 like what you see? s
+            div.unit.size1o3
+                h4 Social Icons Here.
         script(src='/javascripts/modernizr-2.6.2.js')
         script(src='/javascripts/jquery-1.8.2.min.js')
         script(src="//cdn.socket.io/socket.io-1.0.0.js")
